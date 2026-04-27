@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,44 +7,39 @@
 @layer base {
   :root {
     /* ── Raahi Brand Colors ── */
-    /* Deep Teal #113122 → background */
-    --background:      158 48% 12%;
-    /* Ivory #e8e0cc → foreground */
-    --foreground:      40 30% 87%;
-
-    --card:            158 45% 10%;
+    --background:      158 48% 12%;      /* Deep Teal #113122 */
+    --foreground:      40 30% 87%;       /* Ivory #e8e0cc */
+    --card:            158 45% 9%;
     --card-foreground: 40 30% 87%;
-
-    --popover:         158 45% 10%;
+    --popover:         158 45% 9%;
     --popover-foreground: 40 30% 87%;
-
-    /* Rust/Terracotta #a34d26 → primary accent */
-    --primary:         20 61% 39%;
+    --primary:         20 61% 39%;       /* Rust #a34d26 */
     --primary-foreground: 40 30% 95%;
-
-    /* Sage #6f8566 → secondary */
-    --secondary:       100 12% 46%;
+    --secondary:       100 12% 46%;      /* Sage #6f8566 */
     --secondary-foreground: 40 30% 95%;
-
-    --muted:           158 30% 18%;
-    --muted-foreground: 40 15% 55%;
-
-    /* Rust as accent */
+    --muted:           158 30% 16%;
+    --muted-foreground: 40 15% 52%;
     --accent:          20 61% 39%;
     --accent-foreground: 40 30% 95%;
-
     --destructive:     0 84% 60%;
     --destructive-foreground: 40 30% 95%;
-
-    --border:          158 20% 22%;
-    --input:           158 25% 18%;
+    --border:          158 20% 20%;
+    --input:           158 25% 16%;
     --ring:            20 61% 39%;
+    --radius:          0.25rem;
 
-    --radius: 0.5rem;
+    /* ── Brand Palette (raw hex for inline use) ── */
+    --teal:   #113122;
+    --rust:   #a34d26;
+    --sage:   #6f8566;
+    --ivory:  #e8e0cc;
+    --dark:   #0a1f15;
+    --cream:  #f5f0e8;
 
-    --font-heading: 'Cormorant Garamond', Georgia, serif;
+    /* ── Typography ── */
+    --font-heading: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
     --font-script:  'Cormorant Garamond', Georgia, serif;
-    --font-body:    'Jost', 'Century Gothic', sans-serif;
+    --font-body:    'Jost', 'Century Gothic', 'Trebuchet MS', sans-serif;
 
     --site-blur: 24px;
   }
@@ -52,13 +47,16 @@
 
 @layer base {
   * { @apply border-border; }
+
   html { scroll-behavior: smooth; }
+
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
   h1, h2, h3, h4, h5 {
     font-family: var(--font-heading);
   }
@@ -66,80 +64,108 @@
 
 @layer components {
 
-  .font-script  { font-family: var(--font-script);  }
+  .font-script  { font-family: var(--font-script); }
   .font-heading { font-family: var(--font-heading); }
-  .font-body    { font-family: var(--font-body);    }
+  .font-body    { font-family: var(--font-body); }
 
+  /* ── Section labels ── */
   .section-label {
-    @apply font-body text-[10px] tracking-[0.55em] text-foreground/40 uppercase mb-3;
+    font-family: var(--font-body);
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: rgba(163,77,38,0.75);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    display: block;
   }
 
-  .section-heading {
-    @apply font-heading text-3xl md:text-4xl lg:text-5xl text-foreground mb-6 leading-tight;
-  }
-
-  /* ── Primary button — rust fill rises from bottom ── */
+  /* ── Rust outline button — fill rises from bottom ── */
   .btn-primary-outline {
-    border: 1px solid hsl(var(--primary));
-    color: hsl(var(--primary));
+    border: 1px solid #a34d26;
+    color: #a34d26;
     padding: 0.8rem 2.2rem;
     min-height: 44px;
     font-family: var(--font-body);
     font-size: 0.6875rem;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     font-weight: 500;
+    text-transform: uppercase;
     display: inline-block;
     position: relative;
     overflow: hidden;
     z-index: 0;
     transition: color 0.4s ease;
     cursor: pointer;
-    text-transform: uppercase;
+    text-decoration: none;
   }
   .btn-primary-outline::before {
     content: '';
     position: absolute;
     bottom: 0; left: 0; right: 0;
     height: 0;
-    background: hsl(var(--primary));
+    background: #a34d26;
     transition: height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: -1;
   }
   .btn-primary-outline:hover::before { height: 100%; }
-  .btn-primary-outline:hover { color: hsl(var(--primary-foreground)); }
+  .btn-primary-outline:hover { color: #e8e0cc; }
 
-  /* ── Secondary dark filled button ── */
+  /* ── Dark filled button ── */
   .btn-dark-filled {
-    background: hsl(var(--secondary) / 0.2);
-    color: hsl(var(--foreground));
+    background: rgba(111,133,102,0.12);
+    color: #e8e0cc;
     padding: 0.8rem 2.2rem;
     min-height: 44px;
     font-family: var(--font-body);
     font-size: 0.6875rem;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.22em;
     font-weight: 500;
-    border: 1px solid hsl(var(--border));
+    text-transform: uppercase;
+    border: 1px solid rgba(232,224,204,0.15);
     display: inline-block;
     position: relative;
     overflow: hidden;
     z-index: 0;
     transition: color 0.4s ease, border-color 0.4s ease;
     cursor: pointer;
-    text-transform: uppercase;
+    text-decoration: none;
   }
   .btn-dark-filled::before {
     content: '';
     position: absolute;
     bottom: 0; left: 0; right: 0;
     height: 0;
-    background: hsl(var(--primary));
+    background: #a34d26;
     transition: height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: -1;
   }
-  .btn-dark-filled:hover::before { height: 100%; }
-  .btn-dark-filled:hover { color: hsl(var(--primary-foreground)); border-color: hsl(var(--primary)); }
+  .btn-dark-filled:hover::before   { height: 100%; }
+  .btn-dark-filled:hover           { color: #e8e0cc; border-color: #a34d26; }
 
-  /* ── Link underline ── */
+  /* ── Ivory section (light background) ── */
+  .section-ivory {
+    background: #f0ebe0;
+    color: #1a3328;
+  }
+  .section-ivory h1,
+  .section-ivory h2,
+  .section-ivory h3 {
+    color: #113122;
+  }
+
+  /* ── Marquee ── */
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    animation: marquee-scroll 36s linear infinite;
+    width: max-content;
+  }
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── Link draw underline ── */
   .link-draw {
     position: relative;
     display: inline-block;
@@ -150,151 +176,13 @@
     bottom: -2px; left: 0;
     width: 0%;
     height: 1px;
-    background: hsl(var(--primary));
+    background: #a34d26;
     transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .link-draw:hover::after { width: 100%; }
-
-  /* ── Marquee ── */
-  .marquee-track {
-    display: flex;
-    gap: 3rem;
-    animation: marquee-scroll 38s linear infinite;
-    width: max-content;
-  }
-  @keyframes marquee-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-
-  /* ── Teal top bar for cards ── */
-  .card-top-bar::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #113122, #6f8566);
-  }
 }
 
-/* ── Raahi brand utility colors ── */
-.text-teal     { color: #113122; }
-.text-sage     { color: #6f8566; }
-.text-rust     { color: #a34d26; }
-.text-ivory    { color: #e8e0cc; }
-.bg-teal       { background-color: #113122; }
-.bg-sage       { background-color: #6f8566; }
-.bg-rust       { background-color: #a34d26; }
-.bg-ivory      { background-color: #e8e0cc; }
-.border-rust   { border-color: #a34d26; }
-.border-sage   { border-color: #6f8566; }
-
-/* ── Scroll
-cat > src/components/CinemaIntro.tsx << 'EOF'
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-
-export function CinemaIntro({ onDone }: { onDone: () => void }) {
-  if (sessionStorage.getItem("introDone") === "true") {
-    onDone();
-    return null;
-  }
-  return <CinemaIntroInner onDone={onDone} />;
-}
-
-function CinemaIntroInner({ onDone }: { onDone: () => void }) {
-  const [phase, setPhase] = useState<"in" | "hold" | "exit">("in");
-
-  const skip = () => {
-    sessionStorage.setItem("introDone", "true");
-    onDone();
-  };
-
-  useEffect(() => {
-    const t1 = setTimeout(() => setPhase("hold"), 700);
-    const t2 = setTimeout(() => setPhase("exit"), 2200);
-    const t3 = setTimeout(() => {
-      sessionStorage.setItem("introDone", "true");
-      onDone();
-    }, 2900);
-    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
-  }, [onDone]);
-
-  return (
-    <motion.div
-      className="fixed inset-0 z-[99999] flex flex-col items-center justify-center"
-      style={{ background: "#113122" }}
-      animate={phase === "exit" ? { y: "-100%" } : { y: "0%" }}
-      transition={phase === "exit"
-        ? { duration: 0.75, ease: [0.76, 0, 0.24, 1] }
-        : {}}
-    >
-      <button
-        onClick={skip}
-        className="absolute top-8 right-8 font-body text-[10px] tracking-[0.45em] uppercase transition-colors"
-        style={{ color: "rgba(232,224,204,0.3)" }}
-        onMouseEnter={e => (e.currentTarget.style.color = "rgba(232,224,204,0.7)")}
-        onMouseLeave={e => (e.currentTarget.style.color = "rgba(232,224,204,0.3)")}
-      >
-        SKIP
-      </button>
-
-      {/* Raahi wordmark — text based until logo asset is added */}
-      <motion.div
-        className="text-center"
-        initial={{ opacity: 0, filter: "blur(16px)" }}
-        animate={phase !== "in"
-          ? { opacity: 1, filter: "blur(0px)" }
-          : { opacity: 0, filter: "blur(16px)" }}
-        transition={{ duration: 0.85 }}
-      >
-        <p style={{
-          fontFamily: "Georgia, serif",
-          fontSize: "clamp(3rem, 10vw, 6rem)",
-          fontWeight: 400,
-          fontStyle: "italic",
-          color: "#e8e0cc",
-          letterSpacing: "0.08em",
-          lineHeight: 1,
-          marginBottom: "0.5rem",
-        }}>
-          Raahi
-        </p>
-        <p style={{
-          fontFamily: "'Jost', sans-serif",
-          fontSize: "10px",
-          letterSpacing: "0.5em",
-          color: "#a34d26",
-          textTransform: "uppercase",
-        }}>
-          Indian Bistro
-        </p>
-      </motion.div>
-
-      {/* Rust line extends from centre */}
-      <motion.div
-        style={{ height: "1px", background: "#a34d26", marginTop: "2rem" }}
-        initial={{ width: 0 }}
-        animate={phase !== "in" ? { width: 80 } : { width: 0 }}
-        transition={{ duration: 0.55, delay: 0.2 }}
-      />
-
-      {/* Location */}
-      <motion.p
-        style={{
-          fontFamily: "'Jost', sans-serif",
-          fontSize: "9px",
-          letterSpacing: "0.6em",
-          color: "rgba(232,224,204,0.3)",
-          marginTop: "1.5rem",
-          textTransform: "uppercase",
-        }}
-        initial={{ opacity: 0 }}
-        animate={phase !== "in" ? { opacity: 1 } : { opacity: 0 }}
-        transition={{ duration: 0.45, delay: 0.4 }}
-      >
-        HOUSTON · TEXAS
-      </motion.p>
-    </motion.div>
-  );
-}
+/* ── Scrollbar ── */
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track { background: #0a1f15; }
+::-webkit-scrollbar-thumb { background: #a34d26; border-radius: 2px; }

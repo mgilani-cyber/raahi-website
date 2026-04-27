@@ -1,256 +1,182 @@
 import { useRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import {
-  ImageComparison,
-  ImageComparisonImage,
-  ImageComparisonSlider,
-} from "@/components/ui/image-comparison";
-import { SEOHead } from "@/components/SEOHead";
-import { MagneticElement } from "@/components/MagneticElement";
-import { useReservation } from "@/contexts/ReservationContext";
 import { Link } from "react-router-dom";
+import { RESERVATION_URL } from "@/constants";
 import barAtmosphere from "@/assets/bar-atmosphere.jpg";
-// Client photos from public/sTORY/
-const IMG_BANNER = "/sTORY/STORY-BANNER.jpg";
-const IMG_CH01   = "/sTORY/cocktail-amber-coupe.png";
-const IMG_CH02   = "/sTORY/VISION.jpg";
-const IMG_CH03   = "/sTORY/cocktail-golden-glow.png";
-const IMG_CH04   = "/sTORY/THE SPACE.JPG";
-const IMG_CH05   = "/sTORY/tapas-marble-spread.png";
-const IMG_LEFT   = "/sTORY/LEFT.png";
-const IMG_RIGHT  = "/sTORY/111.jpg";
+import barPanoramic  from "@/assets/bar-panoramic.jpg";
+import foodDark      from "@/assets/food-dark.jpg";
+import tableSet      from "@/assets/table-setting.jpg";
+import foodPlating   from "@/assets/food-plating.jpg";
+import parallaxBg    from "@/assets/parallax-bg.jpg";
 
+const TEAL  = "#113122";
+const RUST  = "#a34d26";
+const SAGE  = "#6f8566";
+const IVORY = "#e8e0cc";
+const DARK  = "#0a1f15";
+
+function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  return (
+    <motion.div ref={ref} className={className}
+      initial={{ opacity: 0, y: 28 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.85, delay, ease: [0.25, 0.46, 0.45, 0.94] }}>
+      {children}
+    </motion.div>
+  );
+}
+
+function RevealImage({ src, alt = "", className = "", delay = 0 }: { src: string; alt?: string; className?: string; delay?: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-8%" });
+  return (
+    <motion.div ref={ref} className={`overflow-hidden ${className}`}
+      initial={{ clipPath: "inset(14% 0% 14% 0%)" }}
+      animate={inView ? { clipPath: "inset(0% 0% 0% 0%)" } : {}}
+      transition={{ duration: 1.2, delay, ease: [0.25, 0.46, 0.45, 0.94] }}>
+      <motion.img src={src} alt={alt} className="w-full h-full object-cover"
+        style={{ filter: "brightness(0.78) saturate(0.88)" }}
+        initial={{ scale: 1.12 }}
+        animate={inView ? { scale: 1 } : {}}
+        transition={{ duration: 1.2, delay, ease: [0.25, 0.46, 0.45, 0.94] }} />
+    </motion.div>
+  );
+}
+
+// Real Raahi story chapters
 const CHAPTERS = [
   {
-    num: "01", label: "The Name",
-    heading: "Why \"Maaya\"",
-    body: "Maaya is a Sanskrit word for illusion. We chose it because that's what a genuinely good night out feels like — you come in for one drink, and two hours later you're still there wondering where the time went. That's not an accident. That's the whole point.",
-    image: IMG_CH01,
-    objectPosition: "center 35%",
+    num: "01",
+    label: "The Name",
+    heading: "What Raahi Means",
+    body: "Raahi is a Hindi word for traveller — someone on a journey. We chose it because that's what food is, when it's done right. Every dish on our menu carries you somewhere. A mouthful of sarson da saag and you're in Punjab. A bite of Gongura biryani and you're in Andhra Pradesh. That sense of travel, without leaving your seat — that's Raahi.",
+    img: foodPlating,
   },
   {
-    num: "02", label: "The Vision",
-    heading: "Why We Exist",
-    body: "Toronto has no shortage of bars. What it was missing was somewhere that actually had a point of view. We grew up between two worlds — Eastern and Western — and Maaya is what happens when you stop trying to pick one. Everything on the menu belongs here, and it shows.",
-    image: IMG_CH02,
-    objectPosition: "center center",
+    num: "02",
+    label: "The Food",
+    heading: "Recipes That Mean Something",
+    body: "North Houston has a lot of Indian restaurants. What was missing was one that took the food seriously — not just the tikka masala and naan, but the full breadth of what Indian cooking actually is. Street eats. Dosas. Keema. Gongura. Lamb chops from the clay oven. We cook all of it, and we cook it properly. Fresh every day, nothing from a packet.",
+    img: foodDark,
   },
   {
-    num: "03", label: "The Craft",
-    heading: "Every Sip Intentional",
-    body: "Some of these recipes took months to get right. We use things you don't usually find in cocktails — saffron, cardamom, tamarind, smoked salt — not because it sounds interesting on a menu, but because when it works, it really works. Every drink has been through enough rounds of testing that we can tell you exactly why it tastes the way it does.",
-    image: IMG_CH03,
-    objectPosition: "center 40%",
+    num: "03",
+    label: "Chef Akshay",
+    heading: "The Kitchen Behind It All",
+    body: "Chef Akshay brings together two things that don't always meet — classical technique and the kind of flavour memory that only comes from growing up with this food. He's been called the reason people drive across Houston to eat with us. The sarson da saag, the Raahi Special, the tandoori salmon — all his. We're lucky to have him.",
+    img: barAtmosphere,
   },
   {
-    num: "04", label: "The Space",
-    heading: "A Room That Holds the Night",
-    body: "The room was designed to make you lose track of time. Low light, deep booths, music that's loud enough to feel something but quiet enough to still have a real conversation. We put a lot of thought into making it feel like we didn't — that kind of effortless takes work.",
-    image: IMG_CH04,
-    objectPosition: "center 30%",
+    num: "04",
+    label: "The Space",
+    heading: "A Room Worth Coming Back To",
+    body: "When you walk into Raahi, you'll notice the room feels right. Warm light, comfortable booths, music at a volume that lets you actually talk. We put thought into making it a place you'd want to be, not just eat and leave. Whether you're bringing your family for a regular dinner or celebrating something — the room holds both equally well.",
+    img: tableSet,
   },
   {
-    num: "05", label: "The Night",
-    heading: "What Your Evening Becomes",
-    body: "Most people who come here don't plan to stay as long as they do — that's something we hear a lot. A work dinner runs long, a first date turns into a proper night, someone comes in alone and ends up at the bar talking to strangers for hours. We can't explain it, but we're glad it keeps happening.",
-    image: IMG_CH05,
-    objectPosition: "center center",
+    num: "05",
+    label: "North Houston",
+    heading: "Your Neighbourhood Indian Kitchen",
+    body: "Raahi is on Tomball Pkwy because North Houston deserved its own Indian restaurant worth talking about. Our regulars tell us they used to drive south for good Indian food. They don't anymore. That's the whole point — to be the place this part of the city could call its own.",
+    img: barPanoramic,
   },
 ];
 
-function Chapter({ chapter, index }: { chapter: typeof CHAPTERS[0]; index: number }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-  const isEven = index % 2 === 0;
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const imgY = useTransform(scrollYProgress, [0, 1], ["5%", "-5%"]);
+export default function Story() {
+  const { scrollY } = useScroll();
+  const heroY = useTransform(scrollY, [0, 500], [0, 100]);
 
   return (
-    <div ref={ref} className="py-20 border-b border-border/10 last:border-0 relative">
-      {/* Chapter number watermark */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
-        <span className="font-heading text-foreground/[0.025]" style={{ fontSize: "clamp(160px, 30vw, 360px)" }}>
-          {chapter.num}
-        </span>
-      </div>
-      <div className={`container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center relative z-10`}>
-        {/* Image */}
-        <div className={`flex flex-col ${isEven ? "lg:order-1" : "lg:order-2"}`}>
-          <motion.div
-            className="relative overflow-hidden h-[340px] md:h-[520px]"
-            initial={{ opacity: 0, x: isEven ? -50 : 50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            <motion.img
-              src={chapter.image}
-              alt={chapter.heading}
-              className="w-full h-[120%] object-cover -top-[10%] absolute"
-              loading="lazy"
-              style={{ y: imgY, filter: "brightness(0.7) saturate(0.9)", objectPosition: chapter.objectPosition ?? "center center" }}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
-          </motion.div>
-          <div className="mt-3 px-1">
-            <span className="font-body text-[9px] tracking-[0.5em] text-primary/50">
-              {chapter.label}
-            </span>
-          </div>
-        </div>
+    <div style={{ background: TEAL, minHeight: "100vh" }}>
 
-        {/* Text */}
-        <motion.div
-          className={isEven ? "lg:order-2" : "lg:order-1"}
-          initial={{ opacity: 0, x: isEven ? 50 : -50 }}
-          animate={inView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.9, delay: 0.12, ease: [0.25, 0.46, 0.45, 0.94] }}
-        >
-          <div className="flex items-center gap-4 mb-6">
-            <span className="font-heading text-primary/25 text-5xl leading-none">{chapter.num}</span>
-            <div className="h-px flex-1 bg-border/30" />
-          </div>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl text-foreground mb-6 leading-tight">
-            {chapter.heading}
-          </h2>
-          <p className="font-body text-foreground/50 leading-relaxed text-sm md:text-base">
-            {chapter.body}
-          </p>
+      {/* Hero */}
+      <div className="relative overflow-hidden" style={{ minHeight: "70vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <motion.div className="absolute inset-0" style={{ y: heroY }}>
+          <img src={barAtmosphere} alt="Raahi Indian Kitchen Houston" className="w-full h-full object-cover"
+            style={{ filter: "brightness(0.22) saturate(0.65)" }} />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(17,49,34,0.5), rgba(17,49,34,0.75))" }} />
         </motion.div>
+        <div className="relative z-10 text-center px-6" style={{ paddingTop: "120px", paddingBottom: "80px" }}>
+          <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            style={{ fontFamily: "'Jost', sans-serif", fontSize: "10px", letterSpacing: "0.55em", color: RUST, textTransform: "uppercase", marginBottom: "1.5rem" }}>
+            Our Story
+          </motion.p>
+          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
+            style={{ fontFamily: "Cormorant Garamond, Georgia, serif", fontStyle: "italic", fontSize: "clamp(3rem, 8vw, 6rem)", color: IVORY, lineHeight: 0.95, marginBottom: "1.5rem" }}>
+            One Thousand Flavors<br />in One Place
+          </motion.h1>
+          <motion.div initial={{ width: 0 }} animate={{ width: 56 }} transition={{ delay: 0.7, duration: 0.55 }}
+            style={{ height: "1px", background: RUST, margin: "0 auto 1.5rem" }} />
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}
+            style={{ fontFamily: "'Jost', sans-serif", fontSize: "15px", color: "rgba(232,224,204,0.45)", maxWidth: "480px", margin: "0 auto", lineHeight: 1.9 }}>
+            An authentic Indian restaurant in North Houston — where every dish tells a story, and every visit feels like coming home.
+          </motion.p>
+        </div>
+      </div>
+
+      {/* Chapters */}
+      <div style={{ background: TEAL }}>
+        {CHAPTERS.map((ch, i) => (
+          <div key={ch.num} style={{ borderTop: "1px solid rgba(163,77,38,0.12)" }}>
+            <div className="container mx-auto px-6 py-[64px] md:py-[96px]">
+              <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center ${i % 2 !== 0 ? "lg:grid-flow-dense" : ""}`}>
+
+                {/* Text */}
+                <div className={i % 2 !== 0 ? "lg:col-start-2" : ""}>
+                  <FadeUp>
+                    <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "9px", letterSpacing: "0.5em", color: RUST, textTransform: "uppercase", marginBottom: "6px" }}>
+                      {ch.num} — {ch.label}
+                    </p>
+                  </FadeUp>
+                  <FadeUp delay={0.06}>
+                    <h2 style={{ fontFamily: "Cormorant Garamond, Georgia, serif", fontStyle: "italic", fontSize: "clamp(2rem, 4vw, 3.2rem)", color: IVORY, lineHeight: 1.05, marginBottom: "1.5rem" }}>
+                      {ch.heading}
+                    </h2>
+                  </FadeUp>
+                  <FadeUp delay={0.12}>
+                    <div style={{ width: "36px", height: "1px", background: RUST, marginBottom: "1.5rem" }} />
+                    <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "15px", color: "rgba(232,224,204,0.52)", lineHeight: 1.95, maxWidth: "500px" }}>
+                      {ch.body}
+                    </p>
+                  </FadeUp>
+                </div>
+
+                {/* Image */}
+                <div className={i % 2 !== 0 ? "lg:col-start-1 lg:row-start-1" : ""}>
+                  <RevealImage src={ch.img} alt={ch.heading} className="h-[320px] md:h-[420px]" delay={0.1} />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* CTA */}
+      <div style={{ background: DARK, borderTop: "1px solid rgba(163,77,38,0.15)", padding: "80px 0" }}>
+        <div className="container mx-auto px-6 text-center">
+          <FadeUp>
+            <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "10px", letterSpacing: "0.45em", color: RUST, textTransform: "uppercase", marginBottom: "1rem" }}>
+              Come Experience It
+            </p>
+            <h2 style={{ fontFamily: "Cormorant Garamond, Georgia, serif", fontStyle: "italic", fontSize: "clamp(2rem, 4vw, 3.5rem)", color: IVORY, marginBottom: "1rem" }}>
+              The story is better<br />tasted than told.
+            </h2>
+            <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "14px", color: "rgba(232,224,204,0.4)", maxWidth: "380px", margin: "0 auto 2rem", lineHeight: 1.85 }}>
+              17695 Tomball Pkwy, Houston TX 77064.<br />Open 7 days. Tuesday from 5 PM, all other days from 11 AM.
+            </p>
+            <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
+              <a href={RESERVATION_URL} target="_blank" rel="noopener noreferrer" className="btn-primary-outline">
+                Reserve a Table
+              </a>
+              <Link to="/menus" className="btn-dark-filled">
+                See the Menu
+              </Link>
+            </div>
+          </FadeUp>
+        </div>
       </div>
     </div>
   );
 }
-
-const Story = () => {
-  const { openWidget } = useReservation();
-  return (
-    <>
-      <SEOHead
-        title="The Story Behind Bar Maaya Toronto"
-        description="Discover the story of Bar Maaya, Toronto's illusion-inspired cocktail bar where Eastern flavours meet Western creativity. Learn how we turn every sip into a little bit of magic."
-        canonical="/story"
-      />
-      {/* HERO */}
-      <div className="relative overflow-hidden -mt-20 flex items-center justify-center text-center" style={{ minHeight: "60vh", background: "hsl(8,60%,3%)" }}>
-        <img
-          src={IMG_BANNER}
-          alt=""
-          className="absolute inset-0 w-full h-full object-cover object-center"
-        />
-        <div className="absolute inset-0" style={{ background: "rgba(10,8,4,0.65)" }} />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
-        <div className="relative z-10 px-6 py-20">
-          <motion.p
-            className="mb-5"
-            style={{ fontFamily: "Calibri, 'Gill Sans', sans-serif", fontSize: "11px", letterSpacing: "0.3em", color: "#C9A84C", textTransform: "uppercase" }}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
-            OUR STORY
-          </motion.p>
-          <div className="overflow-hidden">
-            <motion.h1
-              style={{ fontFamily: "'Playfair Display', 'Crimson Pro', Georgia, serif", fontStyle: "italic", fontSize: "clamp(34px, 6vw, 56px)", color: "#F5ECD7", lineHeight: 1.1 }}
-              initial={{ y: "100%" }} animate={{ y: "0%" }} transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}>
-              The Essence of <span style={{ color: "#C9A84C" }}>Maaya</span>
-            </motion.h1>
-          </div>
-          <motion.p
-            style={{ fontFamily: "Calibri, 'Gill Sans', sans-serif", color: "rgba(245,236,215,0.6)", fontSize: "16px", marginTop: "20px" }}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-            Maaya — illusion in Sanskrit. A word that shapes everything we do.
-          </motion.p>
-        </div>
-      </div>
-
-      {/* ABOUT INTRO ─ three paragraphs for SEO + GEO */}
-      <section className="py-20" style={{ background: "hsl(8,60%,3%)" }}>
-        <div className="container mx-auto px-6 max-w-3xl space-y-6">
-          {[
-            `Maaya is a Sanskrit word for illusion. Not the trick kind — the kind where you're so present in a moment that everything else falls away. We built this bar around that feeling, in a room on Adelaide Street where the nights tend to run longer than planned.`,
-            `The cocktails are where East meets West on this menu. Cardamom, saffron and tamarind sitting next to the classics — not as a gimmick, but because that's genuinely how we think about flavour. A lot of our regulars came in once on a whim and haven't really stopped coming back.`,
-            `We're a few minutes from some of Toronto's best theatres, which means we see a lot of different kinds of nights. Pre-show nerves, post-show highs, late-night decisions. Whatever brings you in — the bar's the same and the welcome's the same.`,
-          ].map((para, i) => (
-            <motion.p
-              key={i}
-              className="font-body text-foreground/45 text-[15px] leading-[1.9]"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.1 }}
-            >
-              {para}
-            </motion.p>
-          ))}
-        </div>
-      </section>
-
-      {/* CHAPTERS */}
-      <div className="bg-background">
-        {CHAPTERS.map((chapter, i) => (
-          <Chapter key={chapter.num} chapter={chapter} index={i} />
-        ))}
-      </div>
-
-      {/* DUAL IMAGE — drag-to-compare */}
-      <div style={{ background: "hsl(8,60%,3%)" }}>
-        <ImageComparison
-          className="w-full"
-          style={{ height: "clamp(300px, 45vw, 560px)" }}
-        >
-          <ImageComparisonImage
-            src={IMG_LEFT}
-            alt="Bar Maaya kitchen craft"
-            position="left"
-          />
-          <ImageComparisonImage
-            src={IMG_RIGHT}
-            alt="Bar Maaya signature cocktail"
-            position="right"
-          />
-          <ImageComparisonSlider className="bg-white/20 backdrop-blur-sm">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center gap-1 rounded-full border border-white/30 bg-white/10 backdrop-blur-sm"
-              style={{ width: "44px", height: "44px" }}>
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                <path d="M4 1L1 5L4 9" stroke="rgba(201,168,76,0.9)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                <path d="M6 1L9 5L6 9" stroke="rgba(201,168,76,0.9)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-          </ImageComparisonSlider>
-        </ImageComparison>
-      </div>
-
-      {/* FINAL CTA */}
-      <section className="py-20 text-center relative overflow-hidden" style={{ background: "hsl(8,60%,4%)" }}>
-        <div className="absolute inset-0 opacity-[0.03]"
-          style={{ backgroundImage: `url(${barAtmosphere})`, backgroundSize: "cover", backgroundPosition: "center" }} />
-        <div className="relative z-10 container mx-auto px-6 max-w-2xl">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <p className="font-script italic text-primary text-2xl mb-4">"Look beyond the veil."</p>
-            <h2 className="font-heading text-3xl md:text-5xl text-foreground mb-4">Now You Know Our Story</h2>
-            <p className="font-body text-foreground/40 text-sm mb-10 leading-relaxed">
-              Come experience it for yourself. Toronto's most immersive bar, 244 Adelaide St West.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <MagneticElement>
-                <button onClick={openWidget} className="btn-gold-outline text-[11px] inline-block">
-                  RESERVE YOUR TABLE
-                </button>
-              </MagneticElement>
-              <MagneticElement>
-                <Link to="/menus" className="btn-dark-filled text-[11px] inline-block">VIEW MENUS</Link>
-              </MagneticElement>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    </>
-  );
-};
-
-export default Story;
