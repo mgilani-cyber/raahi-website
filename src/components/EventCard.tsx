@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { OPENTABLE_URL } from "@/constants";
+
 
 interface EventCardProps {
   time: string;
@@ -11,7 +11,7 @@ interface EventCardProps {
 }
 
 export const EventCard = ({ time, title, description, buttonText = "RESERVE YOUR TABLE", buttonLink, externalLink }: EventCardProps) => {
-  const href = buttonLink || OPENTABLE_URL;
+  const href = buttonLink || ;
   const isExternal = externalLink ?? !buttonLink;
 
   return (

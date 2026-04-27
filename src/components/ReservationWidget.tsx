@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, Phone, MapPin, Clock, ChevronDown, Users } from "lucide-react";
 import { useReservation } from "@/contexts/ReservationContext";
-import { OPENTABLE_URL, PHONE_NUMBER, ADDRESS } from "@/constants";
+import { PHONE_NUMBER, ADDRESS } from "@/constants";
 
 /* ─── helpers ───────────────────────────────────────────────── */
 function buildDateOptions() {
@@ -124,7 +124,7 @@ export const ReservationWidget = () => {
   const dateLabel  = DATE_OPTIONS.find(d => d.value === date)?.label ?? "";
   const timeLabel  = TIME_OPTIONS.find(t => t.value === time)?.label ?? "";
   const guestLabel = guests === "8" ? "8+ Guests" : `${guests} ${guests === "1" ? "Guest" : "Guests"}`;
-  const deepLink   = `${OPENTABLE_URL}&covers=${guests}&datetime=${date}T${time}`;
+  const deepLink   = `${}&covers=${guests}&datetime=${date}T${time}`;
 
   /* animation: slide from bottom (mobile) or from right (desktop) */
   const initial = isMobile ? { y: "100%", opacity: 1 } : { x: "100%", opacity: 1 };

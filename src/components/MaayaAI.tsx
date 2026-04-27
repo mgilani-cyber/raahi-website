@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Send, Sparkles, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { OPENTABLE_URL, PHONE_NUMBER } from "@/constants";
+
 
 // ── Knowledge base ────────────────────────────────────────────────────────────
 const KB = {
@@ -22,11 +22,11 @@ const KB = {
 
   privateEvents: `**Private Events at Bar Maaya**\n\n**Birthday Packages:**\n- Love Seat — 2–8 guests · From $35/person · Tiramisu cake included\n- Gallery — 8–20 guests · From $35/person · Tiramisu cake + birthday banner\n- Bar Buyout — 20–30 guests · From $40/person · Custom menu + DJ\n- Ballroom — 30–40 guests · From $45/person · Full venue, bespoke experience\n\n**Corporate Packages:**\n- Team Dinner — 4–15 guests · From $35/person\n- Client Entertainment — 15–25 guests · From $40/person\n- Full Buyout — 25–40 guests · Custom pricing\n\nAll packages include custom cocktail menus, entertainment options, and full event coordination.\n\n[Plan Your Event →](/events)`,
 
-  reservation: `**Reserve a Table**\n\nBook your table online — it takes under 60 seconds.\n\nWalk-ins are also welcome based on availability.\n\nFor large groups (8+) or private events, call us directly:\n${PHONE_NUMBER}\n\n[Reserve Your Table →](${OPENTABLE_URL})`,
+  reservation: `**Reserve a Table**\n\nBook your table online — it takes under 60 seconds.\n\nWalk-ins are also welcome based on availability.\n\nFor large groups (8+) or private events, call us directly:\n${PHONE_NUMBER}\n\n[Reserve Your Table →](${})`,
 
   location: `**Find Bar Maaya**\n\n**244 Adelaide St West**\nToronto, Ontario M5H 1X6\n\nIn the heart of the Entertainment District, steps from Osgoode Station.\n\nTTC: Osgoode (Line 1) — 3 min walk\nGreen P parking on Adelaide & Peter St\n\n[Get Directions →](https://maps.google.com/?q=244+Adelaide+St+West+Toronto)`,
 
-  contact: `**Contact Bar Maaya**\n\n**Phone:** ${PHONE_NUMBER}\n**Address:** 244 Adelaide St West, Toronto\n**Instagram:** [@bar.maaya](https://www.instagram.com/bar.maaya/)\n\nFor private event inquiries:\n[Submit Event Request →](/events)\n\nFor reservations:\n[Reserve Your Table →](${OPENTABLE_URL})`,
+  contact: `**Contact Bar Maaya**\n\n**Phone:** ${PHONE_NUMBER}\n**Address:** 244 Adelaide St West, Toronto\n**Instagram:** [@bar.maaya](https://www.instagram.com/bar.maaya/)\n\nFor private event inquiries:\n[Submit Event Request →](/events)\n\nFor reservations:\n[Reserve Your Table →](${})`,
 
   parking: `**Parking near Bar Maaya**\n\nGreen P Parking — Peter St & Adelaide St W (1 min walk)\nMetro Parking — 230 Adelaide St W\nTTC — Osgoode Station (Line 1), 3-min walk\nRideshare drop-off at 244 Adelaide St W`,
 
@@ -78,7 +78,7 @@ function getResponse(q: string): { text: string; links?: { label: string; to: st
     return {
       text: KB.reservation,
       links: [
-        { label: "Reserve Your Table", to: OPENTABLE_URL, external: true },
+        { label: "Reserve Your Table", to: , external: true },
         { label: "Private Events", to: "/events" },
       ],
     };
@@ -138,7 +138,7 @@ const IDLE_MSG: Msg = {
   role: "ai",
   text: "Still exploring?\n\nI'm here whenever you're ready — whether it's finding the perfect cocktail, booking a table, or planning a private event. Just ask.",
   links: [
-    { label: "Reserve a Table ›", to: OPENTABLE_URL, external: true },
+    { label: "Reserve a Table ›", to: , external: true },
     { label: "View Menus ›", to: "/menus" },
   ],
 };
