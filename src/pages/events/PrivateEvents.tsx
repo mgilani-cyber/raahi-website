@@ -89,7 +89,6 @@ const PrivateEvents = () => {
 
   return (
     <>
-      <SEOHead
         title="Private Events Toronto | Bar Maaya — Venue Hire"
         description="Host your private event at Bar Maaya in Toronto's Entertainment District. Birthdays, corporate events, bachelorettes and full venue buyouts. Up to 200 guests."
         canonical="/events/private-events"

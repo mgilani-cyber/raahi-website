@@ -39,7 +39,6 @@ const SipAndPaint = () => {
 
   return (
     <>
-      <SEOHead
         title="Sip & Paint Toronto Every Saturday | Bar Maaya"
         description="Join Bar Maaya's Sip & Paint every Saturday in Toronto's Entertainment District. Canvas and art supplies included, guided by a professional artist. From $20."
         canonical="/events/sip-and-paint"

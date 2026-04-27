@@ -39,7 +39,6 @@ function MenuItem({ name, price, desc }: { name: string; price: string; desc?: s
 const SportsWatchParties = () => {
   return (
     <>
-      <SEOHead
         title="Sports Watch Parties Toronto | Bar Maaya"
         description="Watch the game in style at Bar Maaya. Reserve a table for sports nights in Toronto's Entertainment District — big screens, great cocktails, and the best vibe in the city."
         canonical="/events/sports-watch-parties"
