@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Instagram } from "lucide-react";
 import { motion } from "framer-motion";
-import { OPENTABLE_URL, PHONE_NUMBER, EMAIL, INSTAGRAM_URL } from "@/constants";
-import maayaLogo from "@/assets/maaya-logo.png";
+import { RESERVATION_URL, PHONE_NUMBER, EMAIL, INSTAGRAM_URL, ADDRESS } from "@/constants";
 
 function FooterClock() {
   const [now, setNow] = useState(new Date());
@@ -12,33 +11,24 @@ function FooterClock() {
     return () => clearInterval(id);
   }, []);
 
-  const toronto = new Date(now.toLocaleString("en-US", { timeZone: "America/Toronto" }));
-  const day  = toronto.getDay();
-  const hour = toronto.getHours();
+  const houston = new Date(now.toLocaleString("en-US", { timeZone: "America/Chicago" }));
+  const day  = houston.getDay();
+  const hour = houston.getHours();
 
-  let isOpen = false;
-  if (day === 1) {
-    isOpen = false;
-  } else if (day === 0) {
-    isOpen = hour < 2 || hour >= 16;
-  } else if (day === 5 || day === 6) {
-    isOpen = hour >= 16 || hour < 2;
-  } else {
-    isOpen = hour >= 16 && hour < 24;
-  }
+  const isOpen = day !== 1 && (hour >= 11 && hour < 23);
 
-  const timeStr = toronto.toLocaleTimeString("en-CA", {
-    timeZone: "America/Toronto", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true,
+  const timeStr = houston.toLocaleTimeString("en-US", {
+    timeZone: "America/Chicago", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true,
   });
 
   return (
     <div className="mt-4 space-y-1">
       <div className="flex items-center gap-2">
-        <span className={`w-2 h-2 rounded-full shrink-0 ${isOpen ? "bg-green-500 animate-pulse" : "bg-red-400"}`} />
+        <span className={`w-2 h-2 rounded-full shrink-0 ${isOpen ? "bg-green-400 animate-pulse" : "bg-red-400"}`} />
         <span className="font-body text-[11px]" style={{ color: isOpen ? "#4CAF50" : "#E57373" }}>
-          {isOpen ? "Open Now" : (day === 1 ? "Closed today · Back Tuesday" : "Closed")}
+          {isOpen ? "Open Now" : day === 1 ? "Closed Mondays" : "Closed"}
         </span>
-        <span className="font-body text-[11px] text-foreground/30">{timeStr}</span>
+        <span className="font-body text-[11px] text-foreground/30">{timeStr} CT</span>
       </div>
     </div>
   );
@@ -51,132 +41,115 @@ const NAV = [
   { label: "Events",       path: "/events"       },
   { label: "Story",        path: "/story"        },
   { label: "Reservations", path: "/reservations" },
+  { label: "Catering",     path: "/catering"     },
 ];
 
 const HOURS = [
-  { day: "Monday",    time: "Closed",        closed: true  },
-  { day: "Tue – Thu", time: "4:00 PM – 12 AM"              },
-  { day: "Fri – Sat", time: "4:00 PM – 2 AM"               },
-  { day: "Sunday",    time: "4:00 PM – 12 AM"              },
+  { day: "Monday",         time: "Closed",          closed: true  },
+  { day: "Tue – Thu",      time: "11:00 AM – 10 PM"              },
+  { day: "Fri – Sat",      time: "11:00 AM – 11 PM"              },
+  { day: "Sunday",         time: "11:00 AM – 10 PM"              },
 ];
 
 export const Footer = () => {
   return (
-    <footer className="relative border-t border-border/20 overflow-hidden" style={{ background: "hsl(8,60%,3%)" }}>
+    <footer className="relative border-t overflow-hidden" style={{ background: "#0a1f15", borderColor: "rgba(163,77,38,0.2)" }}>
 
-      {/* Top gold line */}
-      <div
-        className="absolute top-0 left-0 right-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent 0%, hsl(42,52%,54%,0.35) 50%, transparent 100%)" }}
-      />
+      {/* Top rust line */}
+      <div className="absolute top-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(90deg, transparent 0%, rgba(163,77,38,0.5) 50%, transparent 100%)" }} />
 
-      {/* Main grid */}
-      <div className="container mx-auto px-6 pt-16 md:pt-20 pb-10" style={{ paddingBottom: "max(2.5rem, calc(2.5rem + env(safe-area-inset-bottom)))" }}>
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 pb-14 border-b border-border/15">
+      <div className="container mx-auto px-6 pt-16 md:pt-20 pb-10">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 pb-14 border-b" style={{ borderColor: "rgba(232,224,204,0.08)" }}>
 
-          {/* Brand — 4 cols */}
+          {/* Brand */}
           <div className="md:col-span-4">
-            <img src={maayaLogo} alt="Bar Maaya" className="h-10 w-auto mb-6" />
-            <p className="font-script italic text-primary/75 text-base mb-4 leading-snug">
-              "Look beyond the veil."
-            </p>
-            <p className="font-body text-[11px] text-foreground/30 leading-relaxed mb-7 max-w-[220px]">
-              Eastern ritual meets Western craft.<br />
-              Toronto's most immersive cocktail bar.
-            </p>
-            <div className="flex gap-4">
-              <a
-                href={INSTAGRAM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-9 h-9 border border-border/30 flex items-center justify-center text-foreground/35 hover:border-primary/50 hover:text-primary transition-all duration-300"
-              >
-                <Instagram size={14} />
-              </a>
+            <div className="mb-6">
+              <p style={{ fontFamily: "Georgia, serif", fontSize: "2.2rem", fontStyle: "italic", color: "#e8e0cc", letterSpacing: "0.05em", lineHeight: 1 }}>Raahi</p>
+              <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "8px", letterSpacing: "0.45em", color: "#a34d26", textTransform: "uppercase", marginTop: "4px" }}>Indian Bistro · Houston</p>
             </div>
+            <p className="font-body text-sm leading-relaxed mb-6" style={{ color: "rgba(232,224,204,0.5)", maxWidth: "280px" }}>
+              Where tradition meets modernity. Authentic Indian flavors crafted with contemporary elegance in the heart of Houston.
+            </p>
+            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 font-body text-[10px] tracking-[0.3em] uppercase transition-colors"
+              style={{ color: "rgba(232,224,204,0.35)" }}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#a34d26")}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.35)")}>
+              <Instagram size={13} /> @raahi.houston
+            </a>
           </div>
 
-          {/* Explore — 2 cols */}
+          {/* Nav */}
           <div className="md:col-span-2 md:col-start-6">
-            <p className="font-body text-[9px] tracking-[0.55em] text-foreground/25 uppercase mb-6">Explore</p>
-            <nav className="flex flex-col gap-3">
-              {NAV.map(l => (
-                <Link
-                  key={l.path}
-                  to={l.path}
-                  className="font-body text-[12px] text-foreground/40 hover:text-primary transition-colors duration-300 link-draw w-fit"
-                >
-                  {l.label}
-                </Link>
+            <p className="section-label mb-5">Navigate</p>
+            <ul className="space-y-3">
+              {NAV.map(n => (
+                <li key={n.path}>
+                  <Link to={n.path} className="font-body text-[12px] tracking-wide transition-colors"
+                    style={{ color: "rgba(232,224,204,0.45)" }}
+                    onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#a34d26")}
+                    onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.45)")}>
+                    {n.label}
+                  </Link>
+                </li>
               ))}
-            </nav>
+            </ul>
           </div>
 
-          {/* Hours — 2 cols */}
-          <div className="md:col-span-2">
-            <p className="font-body text-[9px] tracking-[0.55em] text-foreground/25 uppercase mb-6">Hours</p>
-            <div className="flex flex-col gap-3">
+          {/* Hours */}
+          <div className="md:col-span-3">
+            <p className="section-label mb-5">Hours</p>
+            <ul className="space-y-3">
               {HOURS.map(h => (
-                <div key={h.day} className="flex justify-between gap-4">
-                  <span className="font-body text-[11px] text-foreground/35">{h.day}</span>
-                  <span className={`font-body text-[11px] ${h.closed ? "text-foreground/18" : "text-foreground/55"}`}>
-                    {h.time}
-                  </span>
-                </div>
+                <li key={h.day} className="flex justify-between items-baseline">
+                  <span className="font-body text-[12px]" style={{ color: "rgba(232,224,204,0.45)" }}>{h.day}</span>
+                  <span className="font-body text-[12px]" style={{ color: h.closed ? "#E57373" : "rgba(232,224,204,0.65)" }}>{h.time}</span>
+                </li>
               ))}
-            </div>
+            </ul>
             <FooterClock />
-            <p className="font-script italic text-primary/55 text-sm mt-4">
-              Happy Hour: Daily 4–6 PM
-            </p>
           </div>
 
-          {/* Contact + Reserve — 2 cols */}
+          {/* Contact */}
           <div className="md:col-span-2">
-            <p className="font-body text-[9px] tracking-[0.55em] text-foreground/25 uppercase mb-6">Contact</p>
-            <div className="flex flex-col gap-3 mb-8">
-              <a
-                href={`https://maps.google.com/?q=244+Adelaide+St+West+Toronto`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-body text-[11px] text-foreground/40 hover:text-primary transition-colors link-draw w-fit"
-              >
-                244 Adelaide St West<br />Toronto, ON
-              </a>
-              <a
-                href={`tel:${PHONE_NUMBER}`}
-                className="font-body text-[11px] text-foreground/40 hover:text-primary transition-colors"
-              >
-                {PHONE_NUMBER}
-              </a>
-              <a
-                href={`mailto:${EMAIL}`}
-                className="font-body text-[11px] text-foreground/40 hover:text-primary transition-colors break-all"
-              >
-                {EMAIL}
-              </a>
+            <p className="section-label mb-5">Contact</p>
+            <div className="space-y-4">
+              <div>
+                <p className="font-body text-[9px] tracking-[0.4em] mb-1 uppercase" style={{ color: "#a34d26" }}>Phone</p>
+                <a href={`tel:${PHONE_NUMBER}`} className="font-body text-[12px] transition-colors"
+                  style={{ color: "rgba(232,224,204,0.55)" }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#e8e0cc")}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.55)")}>
+                  {PHONE_NUMBER}
+                </a>
+              </div>
+              <div>
+                <p className="font-body text-[9px] tracking-[0.4em] mb-1 uppercase" style={{ color: "#a34d26" }}>Email</p>
+                <a href={`mailto:${EMAIL}`} className="font-body text-[12px] transition-colors"
+                  style={{ color: "rgba(232,224,204,0.55)" }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#e8e0cc")}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.55)")}>
+                  {EMAIL}
+                </a>
+              </div>
+              <div>
+                <p className="font-body text-[9px] tracking-[0.4em] mb-1 uppercase" style={{ color: "#a34d26" }}>Location</p>
+                <p className="font-body text-[12px]" style={{ color: "rgba(232,224,204,0.55)" }}>{ADDRESS}</p>
+              </div>
             </div>
-            <motion.a
-              href={OPENTABLE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-gold-outline text-[10px] block text-center !px-4 !py-2.5"
-              whileHover={{ scale: 1.01 }}
-            >
-              RESERVE
-            </motion.a>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-7 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <span className="font-body text-[10px] text-foreground/18">
-            © {new Date().getFullYear()} Bar Maaya. All rights reserved.
-          </span>
-          <span className="font-body text-[10px] text-foreground/18">
-            Designed by{" "}
-            <a href="https://theetherealAgency.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary/60 transition-colors">The Ethereal Agency</a>
-          </span>
+        <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="font-body text-[10px] tracking-[0.3em]" style={{ color: "rgba(232,224,204,0.2)" }}>
+            © {new Date().getFullYear()} RAAHI INDIAN BISTRO · HOUSTON
+          </p>
+          <a href={RESERVATION_URL} target="_blank" rel="noopener noreferrer"
+            className="btn-primary-outline text-[10px]">
+            Reserve a Table
+          </a>
         </div>
       </div>
     </footer>
