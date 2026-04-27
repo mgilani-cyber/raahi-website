@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Instagram } from "lucide-react";
+import { Instagram, Facebook } from "lucide-react";
 import { motion } from "framer-motion";
-import { RESERVATION_URL, PHONE_NUMBER, EMAIL, INSTAGRAM_URL, ADDRESS } from "@/constants";
+import { RESERVATION_URL, PHONE_NUMBER, PHONE_SECONDARY, EMAIL, INSTAGRAM_URL, FACEBOOK_URL, ADDRESS, GOOGLE_MAPS_URL } from "@/constants";
 
 function FooterClock() {
   const [now, setNow] = useState(new Date());
@@ -12,84 +12,124 @@ function FooterClock() {
   }, []);
 
   const houston = new Date(now.toLocaleString("en-US", { timeZone: "America/Chicago" }));
-  const day  = houston.getDay();
+  const day  = houston.getDay(); // 0=Sun,1=Mon,2=Tue...6=Sat
   const hour = houston.getHours();
+  const min  = houston.getMinutes();
+  const timeDecimal = hour + min / 60;
 
-  const isOpen = day !== 1 && (hour >= 11 && hour < 23);
+  // Real hours:
+  // Mon: 11am–10pm
+  // Tue: 5pm–10pm
+  // Wed–Sun: 11am–10pm
+  let isOpen = false;
+  if (day === 1) {
+    isOpen = timeDecimal >= 11 && timeDecimal < 22; // Mon 11am–10pm
+  } else if (day === 2) {
+    isOpen = timeDecimal >= 17 && timeDecimal < 22; // Tue 5pm–10pm
+  } else {
+    isOpen = timeDecimal >= 11 && timeDecimal < 22; // Wed–Sun 11am–10pm
+  }
 
   const timeStr = houston.toLocaleTimeString("en-US", {
-    timeZone: "America/Chicago", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true,
+    timeZone: "America/Chicago", hour: "2-digit", minute: "2-digit", hour12: true,
   });
 
+  const closingNote = day === 2 ? "Opens at 5 PM today" : "Opens at 11 AM";
+
   return (
-    <div className="mt-4 space-y-1">
+    <div className="mt-4">
       <div className="flex items-center gap-2">
         <span className={`w-2 h-2 rounded-full shrink-0 ${isOpen ? "bg-green-400 animate-pulse" : "bg-red-400"}`} />
-        <span className="font-body text-[11px]" style={{ color: isOpen ? "#4CAF50" : "#E57373" }}>
-          {isOpen ? "Open Now" : day === 1 ? "Closed Mondays" : "Closed"}
+        <span style={{ fontFamily: "'Jost', sans-serif", fontSize: "11px", color: isOpen ? "#4CAF50" : "#E57373" }}>
+          {isOpen ? "Open Now" : closingNote}
         </span>
-        <span className="font-body text-[11px] text-foreground/30">{timeStr} CT</span>
+        <span style={{ fontFamily: "'Jost', sans-serif", fontSize: "11px", color: "rgba(232,224,204,0.25)" }}>
+          {timeStr} CT
+        </span>
       </div>
     </div>
   );
 }
 
 const NAV = [
-  { label: "Home",         path: "/"             },
-  { label: "Menu",         path: "/menus"        },
-  { label: "Gallery",      path: "/gallery"      },
-  { label: "Events",       path: "/events"       },
-  { label: "Story",        path: "/story"        },
+  { label: "Home",         path: "/" },
+  { label: "Menu",         path: "/menus" },
+  { label: "Gallery",      path: "/gallery" },
+  { label: "Events",       path: "/events" },
+  { label: "Our Story",    path: "/story" },
   { label: "Reservations", path: "/reservations" },
-  { label: "Catering",     path: "/catering"     },
+  { label: "Gift Cards",   path: "/gift-cards" },
 ];
 
+// Real hours from Google
 const HOURS = [
-  { day: "Monday",         time: "Closed",          closed: true  },
-  { day: "Tue – Thu",      time: "11:00 AM – 10 PM"              },
-  { day: "Fri – Sat",      time: "11:00 AM – 11 PM"              },
-  { day: "Sunday",         time: "11:00 AM – 10 PM"              },
+  { day: "Monday",    time: "11 a.m. – 10 p.m." },
+  { day: "Tuesday",   time: "5 p.m. – 10 p.m." },
+  { day: "Wednesday", time: "11 a.m. – 10 p.m." },
+  { day: "Thursday",  time: "11 a.m. – 10 p.m." },
+  { day: "Friday",    time: "11 a.m. – 10 p.m." },
+  { day: "Saturday",  time: "11 a.m. – 10 p.m." },
+  { day: "Sunday",    time: "11 a.m. – 10 p.m." },
 ];
+
+const TEAL  = "#113122";
+const RUST  = "#a34d26";
+const IVORY = "#e8e0cc";
 
 export const Footer = () => {
-  return (
-    <footer className="relative border-t overflow-hidden" style={{ background: "#0a1f15", borderColor: "rgba(163,77,38,0.2)" }}>
+  const now    = new Date();
+  const today  = now.toLocaleString("en-US", { timeZone: "America/Chicago", weekday: "long" });
 
-      {/* Top rust line */}
+  return (
+    <footer className="relative border-t overflow-hidden" style={{ background: "#0a1f15", borderColor: "rgba(163,77,38,0.18)" }}>
+
+      {/* Top rust gradient line */}
       <div className="absolute top-0 left-0 right-0 h-px"
-        style={{ background: "linear-gradient(90deg, transparent 0%, rgba(163,77,38,0.5) 50%, transparent 100%)" }} />
+        style={{ background: "linear-gradient(90deg, transparent 0%, rgba(163,77,38,0.55) 50%, transparent 100%)" }} />
 
       <div className="container mx-auto px-6 pt-16 md:pt-20 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 pb-14 border-b" style={{ borderColor: "rgba(232,224,204,0.08)" }}>
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 pb-14 border-b"
+          style={{ borderColor: "rgba(232,224,204,0.07)" }}>
 
-          {/* Brand */}
+          {/* Brand col */}
           <div className="md:col-span-4">
             <div className="mb-6">
-              <p style={{ fontFamily: "Georgia, serif", fontSize: "2.2rem", fontStyle: "italic", color: "#e8e0cc", letterSpacing: "0.05em", lineHeight: 1 }}>Raahi</p>
-              <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "8px", letterSpacing: "0.45em", color: "#a34d26", textTransform: "uppercase", marginTop: "4px" }}>Indian Bistro · Houston</p>
+              <p style={{ fontFamily: "Georgia, serif", fontStyle: "italic", fontSize: "2rem", color: IVORY, lineHeight: 1 }}>Raahi</p>
+              <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "8px", letterSpacing: "0.45em", color: RUST, textTransform: "uppercase", marginTop: "4px" }}>
+                Indian Kitchen · Houston
+              </p>
             </div>
-            <p className="font-body text-sm leading-relaxed mb-6" style={{ color: "rgba(232,224,204,0.5)", maxWidth: "280px" }}>
-              Where tradition meets modernity. Authentic Indian flavors crafted with contemporary elegance in the heart of Houston.
+            <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "13px", color: "rgba(232,224,204,0.42)", lineHeight: 1.85, maxWidth: "280px", marginBottom: "1.5rem" }}>
+              Authentic Indian food in North Houston. Traditional recipes, fresh ingredients, a bar worth staying for. On Tomball Pkwy since 2024.
             </p>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 font-body text-[10px] tracking-[0.3em] uppercase transition-colors"
-              style={{ color: "rgba(232,224,204,0.35)" }}
-              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#a34d26")}
-              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.35)")}>
-              <Instagram size={13} /> @raahi.houston
-            </a>
+            <div className="flex gap-4">
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" aria-label="Instagram"
+                style={{ color: "rgba(232,224,204,0.3)", transition: "color 0.3s" }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = RUST)}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.3)")}>
+                <Instagram size={16} />
+              </a>
+              <a href={FACEBOOK_URL} target="_blank" rel="noopener noreferrer" aria-label="Facebook"
+                style={{ color: "rgba(232,224,204,0.3)", transition: "color 0.3s" }}
+                onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = RUST)}
+                onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.3)")}>
+                <Facebook size={16} />
+              </a>
+            </div>
           </div>
 
-          {/* Nav */}
+          {/* Nav col */}
           <div className="md:col-span-2 md:col-start-6">
-            <p className="section-label mb-5">Navigate</p>
+            <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "9px", letterSpacing: "0.5em", color: "rgba(163,77,38,0.7)", textTransform: "uppercase", marginBottom: "1.2rem" }}>
+              Navigate
+            </p>
             <ul className="space-y-3">
               {NAV.map(n => (
                 <li key={n.path}>
-                  <Link to={n.path} className="font-body text-[12px] tracking-wide transition-colors"
-                    style={{ color: "rgba(232,224,204,0.45)" }}
-                    onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#a34d26")}
-                    onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.45)")}>
+                  <Link to={n.path}
+                    style={{ fontFamily: "'Jost', sans-serif", fontSize: "12px", color: "rgba(232,224,204,0.4)", transition: "color 0.3s", letterSpacing: "0.05em" }}
+                    onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = RUST)}
+                    onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.4)")}>
                     {n.label}
                   </Link>
                 </li>
@@ -97,45 +137,74 @@ export const Footer = () => {
             </ul>
           </div>
 
-          {/* Hours */}
+          {/* Hours col */}
           <div className="md:col-span-3">
-            <p className="section-label mb-5">Hours</p>
-            <ul className="space-y-3">
-              {HOURS.map(h => (
-                <li key={h.day} className="flex justify-between items-baseline">
-                  <span className="font-body text-[12px]" style={{ color: "rgba(232,224,204,0.45)" }}>{h.day}</span>
-                  <span className="font-body text-[12px]" style={{ color: h.closed ? "#E57373" : "rgba(232,224,204,0.65)" }}>{h.time}</span>
-                </li>
-              ))}
+            <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "9px", letterSpacing: "0.5em", color: "rgba(163,77,38,0.7)", textTransform: "uppercase", marginBottom: "1.2rem" }}>
+              Hours
+            </p>
+            <ul className="space-y-2">
+              {HOURS.map(h => {
+                const isToday = h.day === today;
+                return (
+                  <li key={h.day} className="flex justify-between items-baseline gap-4">
+                    <span style={{
+                      fontFamily: "'Jost', sans-serif", fontSize: "12px",
+                      color: isToday ? RUST : "rgba(232,224,204,0.38)",
+                      fontWeight: isToday ? 600 : 400,
+                    }}>
+                      {h.day}
+                    </span>
+                    <span style={{
+                      fontFamily: "'Jost', sans-serif", fontSize: "12px",
+                      color: isToday ? "rgba(232,224,204,0.75)" : "rgba(232,224,204,0.38)",
+                    }}>
+                      {h.time}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
             <FooterClock />
           </div>
 
-          {/* Contact */}
+          {/* Contact col */}
           <div className="md:col-span-2">
-            <p className="section-label mb-5">Contact</p>
+            <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "9px", letterSpacing: "0.5em", color: "rgba(163,77,38,0.7)", textTransform: "uppercase", marginBottom: "1.2rem" }}>
+              Contact
+            </p>
             <div className="space-y-4">
               <div>
-                <p className="font-body text-[9px] tracking-[0.4em] mb-1 uppercase" style={{ color: "#a34d26" }}>Phone</p>
-                <a href={`tel:${PHONE_NUMBER}`} className="font-body text-[12px] transition-colors"
-                  style={{ color: "rgba(232,224,204,0.55)" }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#e8e0cc")}
-                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.55)")}>
+                <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "9px", letterSpacing: "0.35em", color: "rgba(163,77,38,0.5)", textTransform: "uppercase", marginBottom: "4px" }}>Phone</p>
+                <a href={`tel:+13467680068`}
+                  style={{ fontFamily: "'Jost', sans-serif", fontSize: "12px", color: "rgba(232,224,204,0.5)", display: "block", transition: "color 0.3s" }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = IVORY)}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.5)")}>
                   {PHONE_NUMBER}
+                </a>
+                <a href={`tel:+17132775082`}
+                  style={{ fontFamily: "'Jost', sans-serif", fontSize: "12px", color: "rgba(232,224,204,0.5)", display: "block", marginTop: "2px", transition: "color 0.3s" }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = IVORY)}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.5)")}>
+                  {PHONE_SECONDARY}
                 </a>
               </div>
               <div>
-                <p className="font-body text-[9px] tracking-[0.4em] mb-1 uppercase" style={{ color: "#a34d26" }}>Email</p>
-                <a href={`mailto:${EMAIL}`} className="font-body text-[12px] transition-colors"
-                  style={{ color: "rgba(232,224,204,0.55)" }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = "#e8e0cc")}
-                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.55)")}>
+                <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "9px", letterSpacing: "0.35em", color: "rgba(163,77,38,0.5)", textTransform: "uppercase", marginBottom: "4px" }}>Email</p>
+                <a href={`mailto:${EMAIL}`}
+                  style={{ fontFamily: "'Jost', sans-serif", fontSize: "12px", color: "rgba(232,224,204,0.5)", transition: "color 0.3s", wordBreak: "break-all" }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = IVORY)}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.5)")}>
                   {EMAIL}
                 </a>
               </div>
               <div>
-                <p className="font-body text-[9px] tracking-[0.4em] mb-1 uppercase" style={{ color: "#a34d26" }}>Location</p>
-                <p className="font-body text-[12px]" style={{ color: "rgba(232,224,204,0.55)" }}>{ADDRESS}</p>
+                <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "9px", letterSpacing: "0.35em", color: "rgba(163,77,38,0.5)", textTransform: "uppercase", marginBottom: "4px" }}>Address</p>
+                <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer"
+                  style={{ fontFamily: "'Jost', sans-serif", fontSize: "12px", color: "rgba(232,224,204,0.5)", lineHeight: 1.6, transition: "color 0.3s" }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = IVORY)}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.5)")}>
+                  17695 Tomball Pkwy<br />Houston, TX 77064
+                </a>
               </div>
             </div>
           </div>
@@ -143,13 +212,20 @@ export const Footer = () => {
 
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="font-body text-[10px] tracking-[0.3em]" style={{ color: "rgba(232,224,204,0.2)" }}>
-            © {new Date().getFullYear()} RAAHI INDIAN BISTRO · HOUSTON
+          <p style={{ fontFamily: "'Jost', sans-serif", fontSize: "10px", letterSpacing: "0.28em", color: "rgba(232,224,204,0.18)", textTransform: "uppercase" }}>
+            © {new Date().getFullYear()} Raahi Indian Kitchen · Houston, TX
           </p>
-          <a href={RESERVATION_URL} target="_blank" rel="noopener noreferrer"
-            className="btn-primary-outline text-[10px]">
-            Reserve a Table
-          </a>
+          <div className="flex items-center gap-6">
+            <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer"
+              style={{ fontFamily: "'Jost', sans-serif", fontSize: "10px", letterSpacing: "0.25em", color: "rgba(232,224,204,0.22)", textTransform: "uppercase", transition: "color 0.3s" }}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = RUST)}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "rgba(232,224,204,0.22)")}>
+              Get Directions
+            </a>
+            <a href={RESERVATION_URL} target="_blank" rel="noopener noreferrer" className="btn-primary-outline" style={{ fontSize: "9px", padding: "0.6rem 1.4rem" }}>
+              Reserve a Table
+            </a>
+          </div>
         </div>
       </div>
     </footer>
