@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { PageHero } from "@/components/PageHero";
-import { SEOHead } from "@/components/SEOHead";
+
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Check } from "lucide-react";
 import { EMAIL } from "@/constants";

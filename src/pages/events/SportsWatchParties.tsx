@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { PageHero } from "@/components/PageHero";
-import { SEOHead } from "@/components/SEOHead";
+
 import { motion, useInView } from "framer-motion";
 import { OPENTABLE_URL } from "@/constants";
 // Unsplash: sports/watch-party images
