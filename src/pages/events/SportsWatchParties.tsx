@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { PageHero } from "@/components/PageHero";
 
 import { motion, useInView } from "framer-motion";
-import { OPENTABLE_URL } from "@/constants";
+
 // Unsplash: sports/watch-party images
 const SPORTS_HERO = "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1600&q=80"; // sports (#16)
 const SPORTS_BODY = "https://images.unsplash.com/photo-1504450758481-7338eba7524a?w=1600&q=80"; // sports (#15)
@@ -70,7 +70,7 @@ const SportsWatchParties = () => {
                 <p className="text-foreground font-body text-sm tracking-widest uppercase">Cocktails During Every Match</p>
               </div>
 
-              <a href={OPENTABLE_URL} target="_blank" rel="noopener noreferrer" className="btn-gold-outline text-xs">
+              <a href={} target="_blank" rel="noopener noreferrer" className="btn-gold-outline text-xs">
                 RESERVE YOUR MATCH DAY TABLE
               </a>
             </FadeUp>
@@ -115,7 +115,7 @@ const SportsWatchParties = () => {
 
             <FadeUp delay={0.1}>
               <div className="mt-10 text-center">
-                <a href={OPENTABLE_URL} target="_blank" rel="noopener noreferrer" className="btn-gold-outline text-xs">
+                <a href={} target="_blank" rel="noopener noreferrer" className="btn-gold-outline text-xs">
                   RESERVE YOUR TABLE
                 </a>
               </div>
