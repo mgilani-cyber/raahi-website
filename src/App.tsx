@@ -16,8 +16,6 @@ import Gallery from "./pages/Gallery";
 import BookEvent from "./pages/BookEvent";
 import Reservations from "./pages/Reservations";
 import Story from "./pages/Story";
-import SportsWatchParties from "./pages/events/SportsWatchParties";
-import PrivateEvents from "./pages/events/PrivateEvents";
 import NotFound from "./pages/NotFound";
 import GiftCards from "./pages/GiftCards";
 
@@ -32,8 +30,6 @@ function AnimatedRoutes({ revealed }: { revealed: boolean }) {
         <Route path="/menus" element={<PageTransition><Menus /></PageTransition>} />
         <Route path="/gallery" element={<PageTransition><Gallery /></PageTransition>} />
         <Route path="/events" element={<PageTransition><BookEvent /></PageTransition>} />
-        <Route path="/events/sports-watch-parties" element={<PageTransition><SportsWatchParties /></PageTransition>} />
-        <Route path="/events/private-events" element={<PageTransition><PrivateEvents /></PageTransition>} />
         <Route path="/reservations" element={<PageTransition><Reservations /></PageTransition>} />
         <Route path="/story" element={<PageTransition><Story /></PageTransition>} />
         <Route path="/gift-cards" element={<PageTransition><GiftCards /></PageTransition>} />
