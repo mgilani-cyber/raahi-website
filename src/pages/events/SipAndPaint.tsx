@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { PageHero } from "@/components/PageHero";
-import { SEOHead } from "@/components/SEOHead";
+
 import { MagneticElement } from "@/components/MagneticElement";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Check } from "lucide-react";
