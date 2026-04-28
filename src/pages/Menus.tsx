@@ -7,17 +7,17 @@ import { RESERVATION_URL } from "@/constants";
 const G="#d4af58",I="#e8e0cc",T="#081910",D="#0c1e14";
 
 const CAT_IMAGES: Record<string,string> = {
-  "starters":     "/raahi/11.03.25RaahiIndianKitchen_0098.jpg",
-  "street-eats":  "/raahi/11.03.25RaahiIndianKitchen_0038.jpg",
-  "tandoor":      "/raahi/11.03.25RaahiIndianKitchen_0013.jpg",
-  "dosa":         "/raahi/RAAHI (4)-2.jpg",
-  "indo-chinese": "/raahi/RAAHI (5).png",
-  "mains-veg":    "/raahi/RAAHI (6).png",
-  "mains-nonveg": "/raahi/RAAHI (7).png",
-  "biryani":      "/raahi/RAAHI (8).png",
-  "breads":       "/raahi/H.jpg",
-  "desserts":     "/raahi/ChatGPT Image Aug 26, 2025 at 01_15_58 PM.png",
-  "drinks":       "/raahi/ChatGPT Image Aug 26, 2025 at 01_18_20 PM.png",
+  "starters":     "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=1920&q=80",
+  "street-eats":  "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=1920&q=80",
+  "tandoor":      "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=1920&q=80",
+  "dosa":         "https://images.unsplash.com/photo-1630383249896-483b8f926946?w=1920&q=80",
+  "indo-chinese": "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=1920&q=80",
+  "mains-veg":    "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1920&q=80",
+  "mains-nonveg": "https://images.unsplash.com/photo-1574653853027-5382a3d23a15?w=1920&q=80",
+  "biryani":      "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=1920&q=80",
+  "breads":       "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1920&q=80",
+  "desserts":     "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1920&q=80",
+  "drinks":       "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1920&q=80",
 };
 
 function ItemRow({ item }: { item: any }) {
