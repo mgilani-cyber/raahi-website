@@ -69,8 +69,7 @@ export default function Menus() {
   const [activeId,setActiveId]=useState(MENU_CATEGORIES[0].id);
   const active=MENU_CATEGORIES.find(c=>c.id===activeId)||MENU_CATEGORIES[0];
   const activeBg=(active as any).image||DEFAULT_IMAGE;
-  const active=MENU_CATEGORIES.find(c=>c.id===activeId)!;
-  return (
+    return (
     <div style={{background:T,minHeight:"100vh"}}>
       <div style={{background:D,borderBottom:"1px solid rgba(163,77,38,0.15)",paddingTop:"120px",paddingBottom:"56px"}}>
         <div className="container mx-auto px-6">
