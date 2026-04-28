@@ -1,3 +1,4 @@
+import { EventImageGallery } from "@/components/ui/image-gallery";
 import InteractiveSelector from "@/components/ui/interactive-selector";
 import { useState, useRef } from "react";
 import { PageHero } from "@/components/PageHero";
@@ -37,7 +38,6 @@ function StepDots({ current }: { current: number }) {
           )}
         </div>
       ))}
-    <InteractiveSelector />
 </div>
   );
 }
@@ -267,6 +267,8 @@ const PrivateEvents = () => {
           </div>
         </div>
       </section>
+      <EventImageGallery />
+      <InteractiveSelector />
     </>
   );
 };
