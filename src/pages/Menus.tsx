@@ -1,121 +1,170 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { FullScreenScrollFX, FullScreenFXAPI } from "@/components/ui/full-screen-scroll-fx";
 import { MENU_CATEGORIES } from "@/lib/menuData";
-import type { MenuCategoryData } from "@/lib/menuData";
 import { RESERVATION_URL } from "@/constants";
 
-const T="#113122",R="#a34d26",I="#e8e0cc",D="#0a1f15";
+const G="#d4af58",I="#e8e0cc",T="#081910",D="#0c1e14",R="#a34d26";
 
-function ItemRow({item}:{item:any}) {
-  const [h,setH]=useState(false);
+// Map category IDs to background images
+const CAT_IMAGES: Record<string,string> = {
+  "starters":     "/raahi/11.03.25RaahiIndianKitchen_0098.jpg",
+  "street-eats":  "/raahi/11.03.25RaahiIndianKitchen_0038.jpg",
+  "tandoor":      "/raahi/11.03.25RaahiIndianKitchen_0013.jpg",
+  "dosa":         "/raahi/RAAHI (4)-2.jpg",
+  "indo-chinese": "/raahi/RAAHI (5).png",
+  "mains-veg":    "/raahi/RAAHI (6).png",
+  "mains-nonveg": "/raahi/RAAHI (7).png",
+  "biryani":      "/raahi/RAAHI (8).png",
+  "breads":       "/raahi/H.jpg",
+  "desserts":     "/raahi/ChatGPT Image Aug 26, 2025 at 01_15_58 PM.png",
+  "drinks":       "/raahi/ChatGPT Image Aug 26, 2025 at 01_18_20 PM.png",
+};
+
+function ItemRow({ item }: { item: any }) {
+  const [h, setH] = useState(false);
   return (
     <div onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)}
-      style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",padding:"16px",borderBottom:"1px solid rgba(163,77,38,0.08)",borderLeft:h?"3px solid rgba(163,77,38,0.6)":"3px solid transparent",background:h?"rgba(163,77,38,0.04)":"transparent",transition:"all 0.2s",gap:"16px"}}>
-      <div style={{flex:1}}>
-        <div style={{display:"flex",alignItems:"center",flexWrap:"wrap",gap:"8px",marginBottom:item.desc?"5px":0}}>
-          <span style={{fontFamily:"Cormorant Garamond,Georgia,serif",fontStyle:"italic",fontSize:"16px",color:I}}>{item.name}</span>
-          {item.veg&&<span style={{fontSize:"8px",fontFamily:"Jost,sans-serif",letterSpacing:"0.15em",color:"rgba(80,200,120,0.8)",border:"1px solid rgba(80,200,120,0.25)",padding:"2px 7px",textTransform:"uppercase"}}>VEG</span>}
-          {item.badge&&<span style={{fontSize:"8px",fontFamily:"Jost,sans-serif",letterSpacing:"0.15em",color:"rgba(163,77,38,0.85)",border:"1px solid rgba(163,77,38,0.3)",padding:"2px 7px",textTransform:"uppercase",background:"rgba(163,77,38,0.08)"}}>{item.badge}</span>}
+      style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between",
+        padding:"14px 16px", borderBottom:"1px solid rgba(212,175,88,0.07)",
+        borderLeft: h ? "2px solid rgba(212,175,88,0.5)" : "2px solid transparent",
+        background: h ? "rgba(212,175,88,0.04)" : "transparent", transition:"all 0.2s", gap:"12px" }}>
+      <div style={{ flex:1 }}>
+        <div style={{ display:"flex", alignItems:"center", flexWrap:"wrap", gap:"8px", marginBottom:item.desc?"4px":0 }}>
+          <span style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"16px", color:I }}>{item.name}</span>
+          {item.veg&&<span style={{ fontSize:"8px", fontFamily:"Jost,sans-serif", letterSpacing:"0.15em", color:"rgba(80,200,120,0.8)", border:"1px solid rgba(80,200,120,0.2)", padding:"2px 6px", textTransform:"uppercase" }}>VEG</span>}
+          {item.badge&&<span style={{ fontSize:"8px", fontFamily:"Jost,sans-serif", letterSpacing:"0.15em", color:G, border:`1px solid rgba(212,175,88,0.25)`, padding:"2px 6px", textTransform:"uppercase" }}>{item.badge}</span>}
         </div>
-        {item.desc&&<p style={{fontFamily:"Jost,sans-serif",fontSize:"12px",color:"rgba(232,224,204,0.38)",lineHeight:1.65,margin:0}}>{item.desc}</p>}
+        {item.desc&&<p style={{ fontFamily:"Jost,sans-serif", fontSize:"12px", color:"rgba(232,224,204,0.35)", lineHeight:1.6, margin:0 }}>{item.desc}</p>}
       </div>
-      <span style={{fontFamily:"Jost,sans-serif",fontSize:"14px",color:R,flexShrink:0,paddingTop:"2px",fontWeight:600}}>{item.price}</span>
+      <span style={{ fontFamily:"Jost,sans-serif", fontSize:"14px", color:G, flexShrink:0, paddingTop:"2px", fontWeight:600 }}>{item.price}</span>
     </div>
   );
 }
 
-function SubGroup({group}:{group:any}) {
-  const [open,setOpen]=useState(true);
+function MenuPanel({ cat }: { cat: any }) {
   return (
-    <div style={{marginBottom:"8px"}}>
-      <button onClick={()=>setOpen(o=>!o)}
-        style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",padding:"14px 16px",background:"rgba(111,133,102,0.08)",border:"none",borderBottom:"1px solid rgba(163,77,38,0.12)",cursor:"pointer",textAlign:"left"}}>
-        <span style={{fontFamily:"Jost,sans-serif",fontSize:"11px",letterSpacing:"0.3em",color:R,textTransform:"uppercase",fontWeight:600}}>
-          {group.label}{group.note&&<span style={{color:"rgba(232,224,204,0.3)",fontWeight:400,marginLeft:"10px"}}>· {group.note}</span>}
-        </span>
-        {open?<ChevronUp size={14} style={{color:"rgba(163,77,38,0.5)",flexShrink:0}}/>:<ChevronDown size={14} style={{color:"rgba(163,77,38,0.5)",flexShrink:0}}/>}
-      </button>
-      <AnimatePresence initial={false}>
-        {open&&(
-          <motion.div initial={{height:0,opacity:0}} animate={{height:"auto",opacity:1}} exit={{height:0,opacity:0}} transition={{duration:0.3}} style={{overflow:"hidden"}}>
-            {group.items.map((item:any,i:number)=><ItemRow key={i} item={item}/>)}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-function CategoryPanel({cat}:{cat:MenuCategoryData}) {
-  return (
-    <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-20}} transition={{duration:0.4}}>
-      <div style={{marginBottom:"28px"}}>
-        <p style={{fontFamily:"Jost,sans-serif",fontSize:"9px",letterSpacing:"0.5em",color:R,textTransform:"uppercase",marginBottom:"8px"}}>{cat.tagline}</p>
-        <h2 style={{fontFamily:"Cormorant Garamond,Georgia,serif",fontStyle:"italic",fontSize:"clamp(1.8rem,4vw,2.8rem)",color:I,lineHeight:1}}>{cat.label}</h2>
-        <div style={{width:"40px",height:"1px",background:R,marginTop:"16px"}}/>
-      </div>
-      <div style={{border:"1px solid rgba(163,77,38,0.12)",background:"rgba(17,49,34,0.4)"}}>
-        {cat.subGroups.map((g,i)=><SubGroup key={i} group={g}/>)}
-      </div>
+    <motion.div initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-20 }} transition={{ duration:0.4 }}
+      style={{ maxWidth:"700px", margin:"0 auto", maxHeight:"70vh", overflowY:"auto",
+        scrollbarWidth:"thin", scrollbarColor:"rgba(212,175,88,0.3) transparent" }}>
+      {cat.subGroups.map((group: any, i: number) => (
+        <div key={i} style={{ marginBottom:"16px" }}>
+          <div style={{ padding:"12px 16px", background:"rgba(212,175,88,0.06)", borderBottom:`1px solid rgba(212,175,88,0.15)` }}>
+            <span style={{ fontFamily:"Jost,sans-serif", fontSize:"10px", letterSpacing:"0.35em", color:G, textTransform:"uppercase", fontWeight:600 }}>
+              {group.label}
+            </span>
+            {group.note&&<span style={{ fontFamily:"Jost,sans-serif", fontSize:"10px", color:"rgba(232,224,204,0.3)", marginLeft:"10px" }}>· {group.note}</span>}
+          </div>
+          {group.items.map((item: any, j: number) => <ItemRow key={j} item={item}/>)}
+        </div>
+      ))}
     </motion.div>
   );
 }
 
 export default function Menus() {
-  const [activeId,setActiveId]=useState(MENU_CATEGORIES[0].id);
-  const active=MENU_CATEGORIES.find(c=>c.id===activeId)!;
+  const [activeId, setActiveId] = useState<string|null>(null);
+  const apiRef = useRef<FullScreenFXAPI>(null);
+
+  const sections = MENU_CATEGORIES.map((cat, i) => ({
+    id: cat.id,
+    background: CAT_IMAGES[cat.id] || "/raahi/11.03.25RaahiIndianKitchen_0013.jpg",
+    leftLabel: (
+      <span style={{ fontFamily:"Jost,sans-serif", fontSize:"clamp(0.75rem,1.5vw,1.1rem)", letterSpacing:"0.15em", textTransform:"uppercase" as const, color:I }}>
+        {cat.tagline}
+      </span>
+    ),
+    title: cat.label,
+    rightLabel: (
+      <button
+        onClick={(e) => { e.stopPropagation(); setActiveId(cat.id); }}
+        style={{ fontFamily:"Jost,sans-serif", fontSize:"10px", letterSpacing:"0.3em", textTransform:"uppercase" as const,
+          border:`1px solid rgba(212,175,88,0.4)`, color:G, padding:"8px 18px", background:"transparent", cursor:"pointer",
+          transition:"all 0.3s" }}
+        onMouseEnter={e => { const el=e.currentTarget as HTMLElement; el.style.background=G; el.style.color=T; }}
+        onMouseLeave={e => { const el=e.currentTarget as HTMLElement; el.style.background="transparent"; el.style.color=G; }}>
+        View Items →
+      </button>
+    ),
+  }));
+
+  const activeCategory = MENU_CATEGORIES.find(c => c.id === activeId);
+
   return (
-    <div style={{background:T,minHeight:"100vh"}}>
-      <div style={{background:D,borderBottom:"1px solid rgba(163,77,38,0.15)",paddingTop:"120px",paddingBottom:"56px"}}>
-        <div className="container mx-auto px-6">
-          <p style={{fontFamily:"Jost,sans-serif",fontSize:"10px",letterSpacing:"0.55em",color:R,textTransform:"uppercase",marginBottom:"1rem"}}>Raahi Indian Kitchen · Houston</p>
-          <h1 style={{fontFamily:"Cormorant Garamond,Georgia,serif",fontStyle:"italic",fontSize:"clamp(2.5rem,6vw,5rem)",color:I,lineHeight:0.95,marginBottom:"1rem"}}>Our Menu</h1>
-          <p style={{fontFamily:"Jost,sans-serif",fontSize:"15px",color:"rgba(232,224,204,0.45)",maxWidth:"520px",lineHeight:1.85}}>
-            Everything from tandoori starters and South Indian dosas to slow-cooked biryanis, street eats and a full bar. Traditional recipes, fresh every day, in North Houston.
-          </p>
-          <div style={{marginTop:"1.5rem",display:"flex",gap:"16px",flexWrap:"wrap"}}>
-            <a href={RESERVATION_URL} target="_blank" rel="noopener noreferrer" className="btn-primary-outline" style={{fontSize:"10px"}}>Reserve a Table</a>
-            <a href="tel:+13467680068" className="btn-dark-filled" style={{fontSize:"10px"}}>+1 (346) 768-0068</a>
-          </div>
-        </div>
+    <div style={{ background:T }}>
+
+      {/* Page header */}
+      <div style={{ background:`linear-gradient(135deg,#081910,#0f2818,#081910)`, paddingTop:"100px", paddingBottom:"40px",
+        borderBottom:"1px solid rgba(212,175,88,0.1)", textAlign:"center", position:"relative" }}>
+        <p style={{ fontFamily:"Jost,sans-serif", fontSize:"10px", letterSpacing:"0.55em", color:G, textTransform:"uppercase", marginBottom:"1rem", opacity:0.7 }}>
+          Raahi Indian Kitchen
+        </p>
+        <h1 style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"clamp(2.5rem,6vw,5rem)", color:I, lineHeight:0.95, marginBottom:"1rem" }}>
+          Our Menu
+        </h1>
+        <div style={{ height:"1px", width:"60px", background:`linear-gradient(90deg,transparent,${G},transparent)`, margin:"1rem auto" }}/>
+        <p style={{ fontFamily:"Jost,sans-serif", fontSize:"14px", color:"rgba(232,224,204,0.4)", lineHeight:1.85, maxWidth:"480px", margin:"0 auto" }}>
+          Scroll through categories — click <em style={{color:G}}>View Items</em> on any section to see the full menu.
+        </p>
       </div>
-      <div className="container mx-auto px-6 py-12">
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="lg:w-64 shrink-0">
-            <div style={{position:"sticky",top:"100px"}}>
-              <p style={{fontFamily:"Jost,sans-serif",fontSize:"9px",letterSpacing:"0.5em",color:"rgba(163,77,38,0.55)",textTransform:"uppercase",marginBottom:"1rem"}}>Categories</p>
-              <nav className="flex lg:flex-col gap-2 flex-wrap">
-                {MENU_CATEGORIES.map(cat=>(
-                  <button key={cat.id} onClick={()=>setActiveId(cat.id)}
-                    style={{textAlign:"left",padding:"12px 16px",fontFamily:"Jost,sans-serif",fontSize:"12px",border:"1px solid",borderColor:activeId===cat.id?"rgba(163,77,38,0.6)":"rgba(163,77,38,0.1)",background:activeId===cat.id?"rgba(163,77,38,0.1)":"transparent",color:activeId===cat.id?R:"rgba(232,224,204,0.45)",cursor:"pointer",transition:"all 0.2s",width:"100%",display:"block"}}>
-                    {cat.label}
-                  </button>
-                ))}
-              </nav>
-              <div style={{marginTop:"2rem",padding:"20px",background:"rgba(163,77,38,0.06)",border:"1px solid rgba(163,77,38,0.15)"}}>
-                <p style={{fontFamily:"Jost,sans-serif",fontSize:"9px",letterSpacing:"0.4em",color:R,textTransform:"uppercase",marginBottom:"10px"}}>Good to know</p>
-                <p style={{fontFamily:"Jost,sans-serif",fontSize:"12px",color:"rgba(232,224,204,0.45)",lineHeight:1.75}}>Paranthas until 5 PM daily. Takeout and delivery available. Call us for same-day orders.</p>
+
+      {/* Full screen scroll FX menu */}
+      <FullScreenScrollFX
+        apiRef={apiRef}
+        sections={sections}
+        header={<span style={{fontFamily:"Jost,sans-serif",fontSize:"10px",letterSpacing:"0.6em",color:"rgba(212,175,88,0.4)"}}>SCROLL TO EXPLORE</span>}
+        showProgress={true}
+        bgTransition="fade"
+        colors={{ text:I, overlay:"rgba(8,25,16,0.6)", pageBg:T, stageBg:T }}
+        durations={{ change:0.7, snap:800 }}
+        gap={0}
+        gridPaddingX={3}
+      />
+
+      {/* Menu items modal */}
+      <AnimatePresence>
+        {activeCategory && (
+          <motion.div className="fixed inset-0 z-[80] flex items-center justify-center p-4"
+            style={{ background:"rgba(8,25,16,0.95)", backdropFilter:"blur(12px)" }}
+            initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
+            onClick={() => setActiveId(null)}>
+            <motion.div
+              style={{ background:"#0c1e14", border:"1px solid rgba(212,175,88,0.2)", width:"100%", maxWidth:"760px", maxHeight:"88vh", display:"flex", flexDirection:"column", borderRadius:"2px" }}
+              initial={{ y:40, opacity:0 }} animate={{ y:0, opacity:1 }} exit={{ y:40, opacity:0 }}
+              transition={{ duration:0.35 }}
+              onClick={e => e.stopPropagation()}>
+
+              {/* Modal header */}
+              <div style={{ padding:"24px 28px", borderBottom:"1px solid rgba(212,175,88,0.1)", display:"flex", justifyContent:"space-between", alignItems:"center", flexShrink:0 }}>
+                <div>
+                  <p style={{ fontFamily:"Jost,sans-serif", fontSize:"9px", letterSpacing:"0.5em", color:G, textTransform:"uppercase", marginBottom:"4px", opacity:0.7 }}>{activeCategory.tagline}</p>
+                  <h2 style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"1.8rem", color:I }}>{activeCategory.label}</h2>
+                </div>
+                <button onClick={() => setActiveId(null)}
+                  style={{ color:"rgba(232,224,204,0.3)", background:"none", border:"none", cursor:"pointer", fontSize:"24px", lineHeight:1, padding:"4px" }}>
+                  ×
+                </button>
               </div>
-            </div>
-          </div>
-          <div className="flex-1 min-w-0">
-            <AnimatePresence mode="wait">
-              <CategoryPanel key={activeId} cat={active}/>
-            </AnimatePresence>
-          </div>
-        </div>
-      </div>
-      <div style={{background:D,borderTop:"1px solid rgba(163,77,38,0.15)",padding:"64px 0"}}>
-        <div className="container mx-auto px-6 text-center">
-          <h2 style={{fontFamily:"Cormorant Garamond,Georgia,serif",fontStyle:"italic",fontSize:"clamp(2rem,4vw,3rem)",color:I,marginBottom:"1rem"}}>Come in. We will take care of the rest.</h2>
-          <p style={{fontFamily:"Jost,sans-serif",fontSize:"14px",color:"rgba(232,224,204,0.4)",marginBottom:"2rem",maxWidth:"400px",margin:"0 auto 2rem",lineHeight:1.85}}>Walk-ins welcome. Reservations recommended on weekends.</p>
-          <div style={{display:"flex",gap:"16px",justifyContent:"center",flexWrap:"wrap"}}>
-            <a href={RESERVATION_URL} target="_blank" rel="noopener noreferrer" className="btn-primary-outline">Reserve a Table</a>
-            <a href="tel:+13467680068" className="btn-dark-filled">Call Us</a>
-          </div>
-        </div>
-      </div>
+
+              {/* Menu items */}
+              <div style={{ overflowY:"auto", flex:1, padding:"8px 0" }}>
+                <MenuPanel cat={activeCategory}/>
+              </div>
+
+              {/* Footer */}
+              <div style={{ padding:"16px 28px", borderTop:"1px solid rgba(212,175,88,0.1)", display:"flex", justifyContent:"space-between", alignItems:"center", flexShrink:0 }}>
+                <p style={{ fontFamily:"Jost,sans-serif", fontSize:"11px", color:"rgba(232,224,204,0.3)" }}>
+                  Paranthas until 5 PM · Takeout & delivery available
+                </p>
+                <a href={RESERVATION_URL} target="_blank" rel="noopener noreferrer"
+                  style={{ fontFamily:"Jost,sans-serif", fontSize:"10px", letterSpacing:"0.25em", color:G, textTransform:"uppercase", border:`1px solid rgba(212,175,88,0.3)`, padding:"8px 18px", textDecoration:"none" }}>
+                  Reserve →
+                </a>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
