@@ -1,225 +1,135 @@
-import { useState, useEffect } from "react";
-import { Tent, Flame, Droplets, Waves, Mountain } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { Utensils, Music, Star, Heart, Calendar } from 'lucide-react';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+const RESERVATION_URL = "https://reservations.shift4payments.com/#/28a60320-b36c-4294-9eb4-0bc1b1d8e019";
 
-export interface SelectorOption {
-  title: string;
-  description: string;
-  image: string;
-  icon: React.ReactNode;
-}
-
-interface InteractiveSelectorProps {
-  options?: SelectorOption[];
-  eyebrow?: string;
-  heading?: string;
-  subheading?: string;
-}
-
-// ─── Default camping options ──────────────────────────────────────────────────
-
-const DEFAULT_OPTIONS: SelectorOption[] = [
+const options = [
   {
-    title: "Luxury Tent",
-    description: "Cozy glamping under the stars",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    icon: <Tent size={24} className="text-white" />,
+    title: "Private Dining",
+    description: "Exclusive tables for celebrations",
+    image: "https://raahiindiankitchen.com/wp-content/uploads/2025/02/IMG_7918-1024x768.jpeg",
+    icon: <Utensils size={20} color="white" />,
   },
   {
-    title: "Campfire Feast",
-    description: "Gourmet s'mores & stories",
-    image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80",
-    icon: <Flame size={24} className="text-white" />,
+    title: "Live Music Nights",
+    description: "Food, drinks & live performances",
+    image: "https://raahiindiankitchen.com/wp-content/uploads/2025/02/IMG_7922-1024x768.jpeg",
+    icon: <Music size={20} color="white" />,
   },
   {
-    title: "Lakeside Retreat",
-    description: "Private dock & canoe rides",
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80",
-    icon: <Droplets size={24} className="text-white" />,
+    title: "Chef's Tasting Menu",
+    description: "Multi-course culinary journey",
+    image: "https://raahiindiankitchen.com/wp-content/uploads/2024/08/raahi-appetizer-scaled.jpg",
+    icon: <Star size={20} color="white" />,
   },
   {
-    title: "Mountain Spa",
-    description: "Outdoor sauna & hot tub",
-    image: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=800&q=80",
-    icon: <Waves size={24} className="text-white" />,
+    title: "Diwali & Festivals",
+    description: "Celebrate India's greatest moments",
+    image: "https://raahiindiankitchen.com/wp-content/uploads/2025/02/IMG_7925-1024x768.jpeg",
+    icon: <Heart size={20} color="white" />,
   },
   {
-    title: "Guided Adventure",
-    description: "Expert-led nature tours",
-    image: "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=800&q=80",
-    icon: <Mountain size={24} className="text-white" />,
+    title: "Corporate Events",
+    description: "Impress your team & clients",
+    image: "https://raahiindiankitchen.com/wp-content/uploads/2025/02/IMG_7930-1024x768.jpeg",
+    icon: <Calendar size={20} color="white" />,
   },
 ];
 
-// ─── Inject keyframe styles once ─────────────────────────────────────────────
-
-function injectStyles() {
-  if (document.getElementById("iselector-styles")) return;
-  const style = document.createElement("style");
-  style.id = "iselector-styles";
-  style.textContent = `
-    @keyframes iselector-fadeInTop {
-      0%   { opacity: 0; transform: translateY(-20px); }
-      100% { opacity: 1; transform: translateY(0);     }
-    }
-    .iselector-fadeInTop {
-      opacity: 0;
-      transform: translateY(-20px);
-      animation: iselector-fadeInTop 0.8s ease-in-out forwards;
-    }
-    .iselector-delay-300 { animation-delay: 0.3s; }
-    .iselector-delay-600 { animation-delay: 0.6s; }
-  `;
-  document.head.appendChild(style);
-}
-
-// ─── Component ────────────────────────────────────────────────────────────────
-
-const InteractiveSelector = ({
-  options = DEFAULT_OPTIONS,
-  eyebrow,
-  heading = "Escape in Style",
-  subheading = "Discover luxurious camping experiences in nature's most breathtaking spots.",
-}: InteractiveSelectorProps) => {
+const InteractiveSelector = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [animatedOptions, setAnimatedOptions] = useState<number[]>([]);
+  const [animated, setAnimated] = useState<number[]>([]);
 
-  // Staggered mount animation — 180ms per panel, exactly as specified
   useEffect(() => {
-    injectStyles();
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    options.forEach((_, i) => {
-      timers.push(
-        setTimeout(() => {
-          setAnimatedOptions(prev => [...prev, i]);
-        }, 180 * i)
-      );
-    });
+    const timers = options.map((_, i) =>
+      setTimeout(() => setAnimated(prev => [...prev, i]), 180 * i)
+    );
     return () => timers.forEach(clearTimeout);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleOptionClick = (index: number) => {
-    if (index !== activeIndex) setActiveIndex(index);
-  };
-
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen bg-[#222] font-sans text-white">
-
-      {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div className="w-full max-w-2xl px-6 mt-8 mb-2 text-center">
-        {eyebrow && (
-          <p
-            className="iselector-fadeInTop iselector-delay-300 text-[11px] tracking-[0.4em] uppercase text-gray-400 mb-3"
-          >
-            {eyebrow}
-          </p>
-        )}
-        <h1 className="iselector-fadeInTop iselector-delay-300 text-4xl md:text-5xl font-extrabold text-white mb-3 tracking-tight drop-shadow-lg">
-          {heading}
-        </h1>
-        <p className="iselector-fadeInTop iselector-delay-600 text-lg md:text-xl text-gray-300 font-medium max-w-xl mx-auto">
-          {subheading}
+    <div style={{ background: "#0a1f15", padding: "80px 0" }}>
+      <div style={{ textAlign: "center", marginBottom: "48px", padding: "0 24px" }}>
+        <p style={{ fontFamily: "Jost,sans-serif", fontSize: "10px", letterSpacing: "0.45em", color: "#a34d26", textTransform: "uppercase", marginBottom: "12px" }}>
+          Experiences at Raahi
+        </p>
+        <h2 style={{ fontFamily: "Cormorant Garamond,Georgia,serif", fontStyle: "italic", fontSize: "clamp(2rem,5vw,3.5rem)", color: "#e8e0cc", lineHeight: 1.1, marginBottom: "16px" }}>
+          Every occasion deserves<br />a table at Raahi.
+        </h2>
+        <p style={{ fontFamily: "Jost,sans-serif", fontSize: "14px", color: "rgba(232,224,204,0.45)", maxWidth: "440px", margin: "0 auto" }}>
+          From intimate dinners to full celebrations — we have the space, the food, and the warmth to make it unforgettable.
         </p>
       </div>
 
-      <div className="h-12" />
+      <div style={{ display: "flex", width: "100%", maxWidth: "960px", height: "420px", margin: "0 auto", overflow: "hidden", padding: "0 24px" }}>
+        {options.map((opt, i) => (
+          <div
+            key={i}
+            onClick={() => setActiveIndex(i)}
+            style={{
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-end",
+              overflow: "hidden",
+              backgroundImage: `url('${opt.image}')`,
+              backgroundSize: activeIndex === i ? "auto 100%" : "auto 120%",
+              backgroundPosition: "center",
+              opacity: animated.includes(i) ? 1 : 0,
+              transform: animated.includes(i) ? "translateX(0)" : "translateX(-60px)",
+              transition: "flex 0.7s ease, box-shadow 0.4s ease, opacity 0.5s ease, transform 0.5s ease, background-size 0.7s ease",
+              flex: activeIndex === i ? "7 1 0%" : "1 1 0%",
+              minWidth: "56px",
+              cursor: "pointer",
+              borderLeft: i > 0 ? "2px solid rgba(17,49,34,0.8)" : "none",
+              boxShadow: activeIndex === i ? "0 20px 60px rgba(0,0,0,0.5)" : "0 10px 30px rgba(0,0,0,0.3)",
+            }}
+          >
+            {/* Gradient overlay */}
+            <div style={{
+              position: "absolute", inset: 0,
+              background: activeIndex === i
+                ? "linear-gradient(to top, rgba(10,31,21,0.95) 0%, rgba(10,31,21,0.2) 60%, transparent 100%)"
+                : "linear-gradient(to top, rgba(10,31,21,0.85) 0%, transparent 60%)",
+              transition: "background 0.5s ease",
+            }} />
 
-      {/* ── Options Container — expanding panels ────────────────────────── */}
-      <div className="options flex w-full max-w-[900px] min-w-[600px] h-[400px] mx-0 items-stretch overflow-hidden relative">
-        {options.map((option, index) => {
-          const isActive = activeIndex === index;
-          const isAnimated = animatedOptions.includes(index);
-
-          return (
-            <div
-              key={index}
-              onClick={() => handleOptionClick(index)}
-              style={{
-                // ── Core expand animation (DO NOT CHANGE) ──
-                flex: isActive ? "7 1 0%" : "1 1 0%",
-                transition: "flex 0.7s ease-in-out, box-shadow 0.4s, background-size 0.7s, border-color 0.4s",
-
-                // ── Stagger mount animation (DO NOT CHANGE) ──
-                opacity: isAnimated ? 1 : 0,
-                transform: isAnimated ? "translateX(0)" : "translateX(-60px)",
-
-                // ── Background ──
-                backgroundImage: `url('${option.image}')`,
-                backgroundSize: isActive ? "auto 100%" : "auto 120%",
-                backgroundPosition: "center",
-
-                // ── Layout ──
-                position: "relative",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "flex-end",
-                overflow: "hidden",
-                cursor: "pointer",
-                minWidth: "60px",
-                minHeight: "100px",
-                margin: 0,
-                borderRadius: 0,
-
-                // ── Border & shadow ──
-                borderWidth: "2px",
-                borderStyle: "solid",
-                borderColor: isActive ? "#fff" : "#292929",
-                boxShadow: isActive
-                  ? "0 20px 60px rgba(0,0,0,0.50)"
-                  : "0 10px 30px rgba(0,0,0,0.30)",
-
-                backgroundColor: "#18181b",
-                backfaceVisibility: "hidden",
-                willChange: "flex, opacity, transform",
-                zIndex: isActive ? 10 : 1,
-              }}
-            >
-              {/* Shadow gradient (inset bottom — DO NOT CHANGE) */}
-              <div
-                className="absolute left-0 right-0 pointer-events-none transition-all duration-700 ease-in-out"
-                style={{
-                  bottom: isActive ? "0" : "-40px",
-                  height: "120px",
-                  boxShadow: isActive
-                    ? "inset 0 -120px 120px -120px #000, inset 0 -120px 120px -80px #000"
-                    : "inset 0 -120px 0px -120px #000, inset 0 -120px 0px -80px #000",
-                }}
-              />
-
-              {/* Icon + text label at bottom */}
-              <div className="label absolute left-0 right-0 bottom-5 flex items-center justify-start h-12 z-10 pointer-events-none px-4 gap-3 w-full">
-                {/* Icon circle */}
-                <div className="icon min-w-[44px] max-w-[44px] h-[44px] flex items-center justify-center rounded-full bg-[rgba(32,32,32,0.85)] backdrop-blur-[10px] shadow-[0_1px_4px_rgba(0,0,0,0.18)] border-2 border-[#444] flex-shrink-0 transition-all duration-200">
-                  {option.icon}
-                </div>
-
-                {/* Text — slides in when active (DO NOT CHANGE) */}
-                <div className="info text-white whitespace-pre relative overflow-hidden">
-                  <div
-                    className="main font-bold text-lg transition-all duration-700 ease-in-out"
-                    style={{
-                      opacity: isActive ? 1 : 0,
-                      transform: isActive ? "translateX(0)" : "translateX(25px)",
-                    }}
-                  >
-                    {option.title}
-                  </div>
-                  <div
-                    className="sub text-base text-gray-300 transition-all duration-700 ease-in-out"
-                    style={{
-                      opacity: isActive ? 1 : 0,
-                      transform: isActive ? "translateX(0)" : "translateX(25px)",
-                    }}
-                  >
-                    {option.description}
-                  </div>
-                </div>
+            {/* Label */}
+            <div style={{ position: "relative", zIndex: 2, padding: "20px 16px", display: "flex", alignItems: "center", gap: "12px" }}>
+              <div style={{
+                minWidth: "40px", height: "40px", borderRadius: "50%",
+                background: "rgba(163,77,38,0.85)", border: "1px solid rgba(163,77,38,0.6)",
+                display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+              }}>
+                {opt.icon}
+              </div>
+              <div style={{
+                opacity: activeIndex === i ? 1 : 0,
+                transform: activeIndex === i ? "translateX(0)" : "translateX(20px)",
+                transition: "opacity 0.5s ease, transform 0.5s ease",
+                whiteSpace: "nowrap",
+              }}>
+                <p style={{ fontFamily: "Cormorant Garamond,Georgia,serif", fontSize: "1.15rem", color: "#e8e0cc", fontStyle: "italic", marginBottom: "2px" }}>
+                  {opt.title}
+                </p>
+                <p style={{ fontFamily: "Jost,sans-serif", fontSize: "11px", color: "rgba(232,224,204,0.55)", letterSpacing: "0.05em" }}>
+                  {opt.description}
+                </p>
               </div>
             </div>
-          );
-        })}
+          </div>
+        ))}
+      </div>
+
+      <div style={{ textAlign: "center", marginTop: "48px" }}>
+        
+          href={RESERVATION_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-primary-outline"
+        >
+          Reserve for Your Event
+        </a>
       </div>
     </div>
   );

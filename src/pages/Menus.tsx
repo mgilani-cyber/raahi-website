@@ -1,3 +1,4 @@
+import { RaahiMenuFX } from "@/components/ui/raahi-menu-fx";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
@@ -47,6 +48,8 @@ function SubGroup({group}:{group:any}) {
   );
 }
 
+const DEFAULT_IMAGE = "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1600&auto=format&fit=crop&q=80";
+
 function CategoryPanel({cat}:{cat:MenuCategoryData}) {
   return (
     <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-20}} transition={{duration:0.4}}>
@@ -64,6 +67,8 @@ function CategoryPanel({cat}:{cat:MenuCategoryData}) {
 
 export default function Menus() {
   const [activeId,setActiveId]=useState(MENU_CATEGORIES[0].id);
+  const active=MENU_CATEGORIES.find(c=>c.id===activeId)||MENU_CATEGORIES[0];
+  const activeBg=(active as any).image||DEFAULT_IMAGE;
   const active=MENU_CATEGORIES.find(c=>c.id===activeId)!;
   return (
     <div style={{background:T,minHeight:"100vh"}}>
@@ -106,6 +111,7 @@ export default function Menus() {
           </div>
         </div>
       </div>
+      <RaahiMenuFX />
       <div style={{background:D,borderTop:"1px solid rgba(163,77,38,0.15)",padding:"64px 0"}}>
         <div className="container mx-auto px-6 text-center">
           <h2 style={{fontFamily:"Cormorant Garamond,Georgia,serif",fontStyle:"italic",fontSize:"clamp(2rem,4vw,3rem)",color:I,marginBottom:"1rem"}}>Come in. We will take care of the rest.</h2>

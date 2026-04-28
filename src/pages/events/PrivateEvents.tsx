@@ -1,3 +1,4 @@
+import InteractiveSelector from "@/components/ui/interactive-selector";
 import { useState, useRef } from "react";
 import { PageHero } from "@/components/PageHero";
 
@@ -36,7 +37,8 @@ function StepDots({ current }: { current: number }) {
           )}
         </div>
       ))}
-    </div>
+    <InteractiveSelector />
+</div>
   );
 }
 

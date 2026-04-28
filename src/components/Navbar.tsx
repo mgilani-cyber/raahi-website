@@ -35,11 +35,8 @@ export const Navbar = () => {
       <header className="fixed top-0 left-0 right-0 z-[60] transition-all duration-300"
         style={{ background: scrolled ? "rgba(17,49,34,0.97)" : "transparent", borderBottom: scrolled ? "1px solid rgba(163,77,38,0.15)" : "none" }}>
         <div className="flex items-center justify-between px-6 md:px-10 h-16 md:h-20">
-          <Link to="/">
-            <div>
-              <p style={{ fontFamily: "Cormorant Garamond, Georgia, serif", fontStyle: "italic", fontSize: "1.6rem", color: "#e8e0cc", letterSpacing: "0.05em", lineHeight: 1 }}>Raahi</p>
-              <p style={{ fontFamily: "Jost, sans-serif", fontSize: "7px", letterSpacing: "0.4em", color: "#a34d26", textTransform: "uppercase", marginTop: "2px" }}>Indian Kitchen</p>
-            </div>
+          <Link to="/" className="flex items-center">
+            <img src="/raahi-logo.png" alt="Raahi Indian Kitchen" style={{ height: '72px', width: 'auto', objectFit: 'contain' }} />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
@@ -74,7 +71,7 @@ export const Navbar = () => {
             initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }}
             transition={{ duration: 0.45, ease: [0.76,0,0.24,1] }}>
             <div className="flex items-center justify-between px-6 h-16 border-b" style={{ borderColor: "rgba(163,77,38,0.15)" }}>
-              <p style={{ fontFamily: "Cormorant Garamond, Georgia, serif", fontStyle: "italic", fontSize: "1.4rem", color: "#e8e0cc" }}>Raahi</p>
+              <img src="/raahi-logo.png" alt="Raahi Indian Kitchen" style={{ height: '56px', width: 'auto', objectFit: 'contain' }} />
               <button onClick={() => setOpen(false)} style={{ color: "#e8e0cc", background: "none", border: "none", cursor: "pointer" }}><X size={20} /></button>
             </div>
             <nav className="flex flex-col px-6 pt-10 gap-1">

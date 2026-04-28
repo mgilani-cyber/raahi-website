@@ -16,6 +16,8 @@ import gallery4 from "@/assets/gallery-4.png";
 import gallery5 from "@/assets/gallery-5.png";
 import gallery6 from "@/assets/gallery-6.png";
 import gallery7 from "@/assets/gallery-7.png";
+import { ImageAutoSlider } from "@/components/ui/image-auto-slider";
+import SmoothScrollHero from "@/components/ui/smooth-scroll-hero";
 import gallery8 from "@/assets/gallery-8.png";
 
 const T="#113122",R="#a34d26",S="#6f8566",I="#e8e0cc",D="#0a1f15";
@@ -76,40 +78,44 @@ const REVIEWS=[
 const MARQUEE=["Butter Chicken","Chicken Biryani","Raahi Hurricane","Sarson Da Saag","Mango Lassi","Gol Gappe","Masala Dosa","Lamb Chops","Raahi Margaritas","Gulab Jamun","Palak Paneer","Tandoori Salmon"];
 
 function Hero() {
-  const {scrollY}=useScroll();
-  const y=useTransform(scrollY,[0,600],[0,120]);
-  const op=useTransform(scrollY,[0,400],[1,0]);
+  const { scrollY } = useScroll();
+  const op = useTransform(scrollY, [0, 500], [1, 0]);
+  const y  = useTransform(scrollY, [0, 600], [0, 120]);
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{background:T}}>
-      <motion.div className="absolute inset-0" style={{y}}>
-        <img src={barAtmosphere} alt="Raahi Indian Kitchen Houston" className="w-full h-full object-cover" style={{filter:"brightness(0.22) saturate(0.6)"}} />
-        <div className="absolute inset-0" style={{background:"linear-gradient(to bottom,rgba(17,49,34,0.45),rgba(17,49,34,0.72))"}} />
-      </motion.div>
-      <motion.div className="relative z-10 text-center px-6 max-w-3xl" style={{opacity:op}}>
-        <motion.p initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{delay:0.3}} style={{fontFamily:"Jost,sans-serif",fontSize:"10px",letterSpacing:"0.55em",color:R,textTransform:"uppercase",marginBottom:"2rem"}}>
-          Authentic Indian Restaurant · Houston, TX
-        </motion.p>
-        <motion.h1 initial={{opacity:0,y:32}} animate={{opacity:1,y:0}} transition={{delay:0.45,duration:1}} style={{fontFamily:"Cormorant Garamond,Georgia,serif",fontStyle:"italic",fontSize:"clamp(4.5rem,13vw,10rem)",color:I,lineHeight:0.88,marginBottom:"0.6rem"}}>
-          Raahi
-        </motion.h1>
-        <motion.p initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.7}} style={{fontFamily:"Jost,sans-serif",fontSize:"10px",letterSpacing:"0.42em",color:S,textTransform:"uppercase",marginBottom:"2rem"}}>
-          Indian Kitchen
-        </motion.p>
-        <motion.div initial={{width:0}} animate={{width:56}} transition={{delay:0.85,duration:0.55}} style={{height:"1px",background:R,margin:"0 auto 2rem"}} />
-        <motion.p initial={{opacity:0}} animate={{opacity:1}} transition={{delay:1.0}} style={{fontFamily:"Jost,sans-serif",fontSize:"15px",color:"rgba(232,224,204,0.45)",marginBottom:"2.8rem",lineHeight:1.9,maxWidth:"460px",margin:"0 auto 2.8rem"}}>
-          Traditional Indian food, done properly. North Houston's home for butter chicken, biryani, street eats, dosas and a bar worth staying for.
-        </motion.p>
-        <motion.div initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:1.1}} className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href={RESERVATION_URL} target="_blank" rel="noopener noreferrer" className="btn-primary-outline">Reserve a Table</a>
-          <Link to="/menus" className="btn-dark-filled">Explore the Menu</Link>
-        </motion.div>
-        <motion.p initial={{opacity:0}} animate={{opacity:1}} transition={{delay:1.3}} style={{marginTop:"1.5rem",fontFamily:"Jost,sans-serif",fontSize:"11px",letterSpacing:"0.25em",color:"rgba(232,224,204,0.22)"}}>
-          17695 Tomball Pkwy · Houston, TX 77064
-        </motion.p>
-      </motion.div>
-      <motion.div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" initial={{opacity:0}} animate={{opacity:1}} transition={{delay:1.4}}>
-        <p style={{fontFamily:"Jost,sans-serif",fontSize:"9px",letterSpacing:"0.5em",color:"rgba(232,224,204,0.22)",textTransform:"uppercase"}}>Scroll</p>
-        <motion.div style={{width:1,height:32,background:`linear-gradient(to bottom,${R},transparent)`}} animate={{scaleY:[0.3,1,0.3]}} transition={{duration:2,repeat:Infinity}} />
+    <div className="relative" style={{ background: T }}>
+      <SmoothScrollHero
+        scrollHeight={1500}
+        desktopImage="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1800&auto=format&fit=crop&q=85"
+        mobileImage="https://raahiindiankitchen.com/wp-content/uploads/2024/08/raahi-appetizer-scaled.jpg"
+        initialClipPercentage={25}
+        finalClipPercentage={75}
+      />
+      <motion.div
+        className="absolute top-0 left-0 right-0 min-h-screen flex items-center justify-center z-10 pointer-events-none"
+        style={{ opacity: op }}
+      >
+        <div className="text-center px-6 max-w-3xl pointer-events-auto">
+          <motion.p initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{delay:0.3}} style={{fontFamily:'Jost,sans-serif',fontSize:'10px',letterSpacing:'0.55em',color:R,textTransform:'uppercase',marginBottom:'2rem'}}>
+            Authentic Indian Restaurant · Houston, TX
+          </motion.p>
+          <motion.h1 initial={{opacity:0,y:32}} animate={{opacity:1,y:0}} transition={{delay:0.45,duration:1}} style={{fontFamily:'Cormorant Garamond,Georgia,serif',fontStyle:'italic',fontSize:'clamp(4.5rem,13vw,10rem)',color:I,lineHeight:0.88,marginBottom:'0.6rem'}}>
+            Raahi
+          </motion.h1>
+          <motion.p initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.7}} style={{fontFamily:'Jost,sans-serif',fontSize:'10px',letterSpacing:'0.42em',color:S,textTransform:'uppercase',marginBottom:'2rem'}}>
+            Indian Kitchen
+          </motion.p>
+          <motion.div initial={{width:0}} animate={{width:56}} transition={{delay:0.85,duration:0.55}} style={{height:'1px',background:R,margin:'0 auto 2rem'}} />
+          <motion.p initial={{opacity:0}} animate={{opacity:1}} transition={{delay:1.0}} style={{fontFamily:'Jost,sans-serif',fontSize:'15px',color:'rgba(232,224,204,0.45)',lineHeight:1.9,maxWidth:'460px',margin:'0 auto 2.8rem'}}>
+            Traditional Indian food, done properly. North Houston's home for butter chicken, biryani, street eats, dosas and a bar worth staying for.
+          </motion.p>
+          <motion.div initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:1.1}} className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href={RESERVATION_URL} target="_blank" rel="noopener noreferrer" className="btn-primary-outline">Reserve a Table</a>
+            <a href="/menus" className="btn-dark-filled">Explore the Menu</a>
+          </motion.div>
+          <motion.p initial={{opacity:0}} animate={{opacity:1}} transition={{delay:1.3}} style={{marginTop:'1.5rem',fontFamily:'Jost,sans-serif',fontSize:'11px',letterSpacing:'0.25em',color:'rgba(232,224,204,0.22)'}}>
+            17695 Tomball Pkwy · Houston, TX 77064
+          </motion.p>
+        </div>
       </motion.div>
     </div>
   );
@@ -242,7 +248,7 @@ function HomepageContent() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href={RESERVATION_URL} target="_blank" rel="noopener noreferrer" className="btn-primary-outline">Reserve a Table</a>
-              <Link to="/story" className="btn-dark-filled">Our Story</Link>
+              <a href="#visit" className="btn-dark-filled">Find Us</a>
             </div>
           </FadeUp>
         </div>
