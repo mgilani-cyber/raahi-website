@@ -11,7 +11,6 @@ export interface MenuSubGroup {
   note?: string;
 }
 export interface MenuCategoryData {
-  image?: string;
   id: string;
   label: string;
   tagline: string;
@@ -19,7 +18,7 @@ export interface MenuCategoryData {
 }
 export const MENU_CATEGORIES: MenuCategoryData[] = [
   {
-    id:"starters", image:"https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=1200&auto=format&fit=crop&q=80", label:"Starters", tagline:"Begin the journey",
+    id:"starters", label:"Starters", tagline:"Begin the journey",
     subGroups:[
       { label:"Pakora", items:[
         { name:"Vegetable Pakora", price:"$7.99", veg:true },
@@ -76,7 +75,7 @@ export const MENU_CATEGORIES: MenuCategoryData[] = [
     ],
   },
   {
-    id:"tandoor", image:"https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?w=1200&auto=format&fit=crop&q=80", label:"Tandoor Se", tagline:"From the clay oven",
+    id:"tandoor", label:"Tandoor Se", tagline:"From the clay oven",
     subGroups:[
       { label:"Non-Veg", items:[
         { name:"Chicken Kebab", price:"$13.99" },
@@ -168,7 +167,7 @@ export const MENU_CATEGORIES: MenuCategoryData[] = [
     ],
   },
   {
-    id:"biryani", image:"https://images.unsplash.com/photo-1574653853027-5382a3d23a15?w=1200&auto=format&fit=crop&q=80", label:"Biryani", tagline:"Nine biryanis. All made properly.",
+    id:"biryani", label:"Biryani", tagline:"Nine biryanis. All made properly.",
     subGroups:[
       { label:"Rice", items:[
         { name:"Plain Rice", price:"$4.99", veg:true },
@@ -189,7 +188,7 @@ export const MENU_CATEGORIES: MenuCategoryData[] = [
     ],
   },
   {
-    id:"breads", image:"https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?w=1200&auto=format&fit=crop&q=80", label:"Breads", tagline:"Straight from the tandoor",
+    id:"breads", label:"Breads", tagline:"Straight from the tandoor",
     subGroups:[
       { label:"Breads", items:[
         { name:"Tawa Roti", price:"$1.99", veg:true },
@@ -211,7 +210,7 @@ export const MENU_CATEGORIES: MenuCategoryData[] = [
     ],
   },
   {
-    id:"desserts", image:"https://images.unsplash.com/photo-1546833998-877b37c2e5c6?w=1200&auto=format&fit=crop&q=80", label:"Desserts", tagline:"End on a sweet note",
+    id:"desserts", label:"Desserts", tagline:"End on a sweet note",
     subGroups:[
       { label:"Desserts", items:[
         { name:"Gulab Jamun", price:"$5.99", veg:true, badge:"POPULAR" },
@@ -224,7 +223,7 @@ export const MENU_CATEGORIES: MenuCategoryData[] = [
     ],
   },
   {
-    id:"drinks", image:"https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=1200&auto=format&fit=crop&q=80", label:"Drinks", tagline:"Cocktails, lassis and more",
+    id:"drinks", label:"Drinks", tagline:"Cocktails, lassis and more",
     subGroups:[
       { label:"Cocktails", items:[
         { name:"Mango Storm", price:"$13", desc:"Dark Rum, Lime, Mango, Ginger Beer" },
