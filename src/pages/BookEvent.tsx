@@ -225,6 +225,44 @@ export default function BookEvent() {
       <AnimatePresence>
         {selected && <BookingForm event={selected} onClose={() => setSelected(null)} />}
       </AnimatePresence>
+
+      {/* Image Gallery */}
+      <div style={{ background:"#0c1e14", padding:"0 0 80px", borderTop:"1px solid rgba(212,175,88,0.08)" }}>
+        <div className="container mx-auto px-6 pt-16 mb-10">
+          <p style={{ fontFamily:"Jost,sans-serif", fontSize:"9px", letterSpacing:"0.5em", color:"rgba(212,175,88,0.6)", textTransform:"uppercase", marginBottom:"10px" }}>
+            The Experience
+          </p>
+          <h2 style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"clamp(1.8rem,3.5vw,2.8rem)", color:"#e8e0cc" }}>
+            A glimpse inside Raahi.
+          </h2>
+        </div>
+        <div className="container mx-auto px-6">
+          <div style={{ display:"flex", alignItems:"stretch", gap:"8px", height:"400px", width:"100%" }}>
+            {[
+              "/raahi/11.03.25RaahiIndianKitchen_0013.jpg",
+              "/raahi/11.03.25RaahiIndianKitchen_0038.jpg",
+              "/raahi/11.03.25RaahiIndianKitchen_0098.jpg",
+              "/raahi/RAAHI (4)-2.jpg",
+              "/raahi/RAAHI (5).png",
+              "/raahi/RAAHI (6).png",
+            ].map((src, idx) => (
+              <div key={idx}
+                className="relative overflow-hidden cursor-pointer"
+                style={{ flex:"1 1 0%", borderRadius:"4px", transition:"flex 0.6s cubic-bezier(0.25,0.46,0.45,0.94)", border:"1px solid rgba(212,175,88,0.08)", minWidth:0 }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.flex="4 1 0%"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.flex="1 1 0%"; }}>
+                <img src={src} alt={`Raahi ${idx+1}`}
+                  className="w-full h-full object-cover"
+                  style={{ filter:"brightness(0.6) saturate(0.85)", transition:"filter 0.5s, transform 0.7s", transform:"scale(1.04)" }}
+                  onMouseEnter={e => { const el=e.currentTarget as HTMLElement; el.style.filter="brightness(0.85) saturate(1)"; el.style.transform="scale(1.08)"; }}
+                  onMouseLeave={e => { const el=e.currentTarget as HTMLElement; el.style.filter="brightness(0.6) saturate(0.85)"; el.style.transform="scale(1.04)"; }}
+                />
+                <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(8,25,16,0.8) 0%,transparent 60%)", pointerEvents:"none" }}/>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
