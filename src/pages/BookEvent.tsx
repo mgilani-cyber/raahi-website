@@ -62,6 +62,52 @@ export default function BookEvent() {
           </div>
         </div>
       </div>
+
+      {/* Image Gallery — hover to expand */}
+      <div style={{ padding:"80px 0", background:"#0c1e14", borderTop:"1px solid rgba(212,175,88,0.08)" }}>
+        <div className="container mx-auto px-6 mb-10">
+          <p style={{ fontFamily:"Jost,sans-serif", fontSize:"9px", letterSpacing:"0.5em", color:"rgba(212,175,88,0.6)", textTransform:"uppercase" as const, marginBottom:"10px" }}>
+            The Experience
+          </p>
+          <h2 style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"clamp(1.8rem,3.5vw,2.8rem)", color:"#e8e0cc" }}>
+            A glimpse inside Raahi.
+          </h2>
+        </div>
+        <div className="container mx-auto px-6">
+          <div className="flex items-center gap-2 w-full" style={{ height:"400px" }}>
+            {[
+              "/raahi/11.03.25RaahiIndianKitchen_0013.jpg",
+              "/raahi/11.03.25RaahiIndianKitchen_0038.jpg",
+              "/raahi/11.03.25RaahiIndianKitchen_0098.jpg",
+              "/raahi/RAAHI (4)-2.jpg",
+              "/raahi/RAAHI (5).png",
+              "/raahi/RAAHI (6).png",
+            ].map((src, idx) => (
+              <div key={idx}
+                className="relative flex-grow overflow-hidden cursor-pointer"
+                style={{
+                  width:"56px",
+                  height:"400px",
+                  borderRadius:"4px",
+                  border:"1px solid rgba(212,175,88,0.1)",
+                  transition:"width 0.5s cubic-bezier(0.25,0.46,0.45,0.94)",
+                  flexShrink:0,
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.width = "100%"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.width = "56px"; }}>
+                <img src={src} alt={`Raahi event ${idx+1}`}
+                  className="h-full w-full object-cover object-center"
+                  style={{ filter:"brightness(0.6) saturate(0.85)", transition:"filter 0.4s" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.filter = "brightness(0.85) saturate(1)"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.filter = "brightness(0.6) saturate(0.85)"; }}
+                />
+                <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(8,25,16,0.8) 0%,transparent 60%)", pointerEvents:"none" }}/>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }
