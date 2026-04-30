@@ -102,11 +102,11 @@ export default function Gallery() {
         <motion.img key={scene.id} src={scene.image} alt={scene.location}
           initial={{ opacity:0, scale:1.05 }} animate={{ opacity:1, scale:1 }} exit={{ opacity:0, scale:0.97 }}
           transition={{ duration:0.75, ease:[0.25,0.46,0.45,0.94] }}
-          style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", filter:"brightness(0.5)" }}/>
+          style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", filter:"brightness(0.85)" }}/>
       </AnimatePresence>
 
       {/* Overlays */}
-      <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom,rgba(11,30,20,0.7) 0%,transparent 30%,transparent 55%,rgba(11,30,20,0.9) 100%)", pointerEvents:"none", zIndex:5 }}/>
+      <div style={{ position:"absolute", inset:0, background:"linear-gradient(to bottom,rgba(11,30,20,0.4) 0%,transparent 20%,transparent 70%,rgba(11,30,20,0.5) 100%)", pointerEvents:"none", zIndex:5 }}/>
 
       {/* Top */}
       <div style={{ position:"absolute", top:0, left:0, right:0, padding:"32px 44px", display:"flex", alignItems:"center", justifyContent:"space-between", zIndex:30 }}>
