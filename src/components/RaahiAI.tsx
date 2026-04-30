@@ -102,12 +102,12 @@ function MsgText({ text }: { text: string }) {
   return (
     <span>
       {lines.map((line, li) => {
-        const segs = line.split(/(\.\*[^*]+\.\*|\[[^\]]+\]\([^)]+\))/g);
+        const segs = line.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g);
         return (
           <span key={li}>
             {li > 0 && <br />}
             {segs.map((seg, si) => {
-              if (/^\.\*[^*]+\.\*$/.test(seg)) return <strong key={si}>{seg.slice(2,-2)}</strong>;
+              if (/^\*\*[^*]+\*\*$/.test(seg)) return <span key={si} style={{color:"#d4af58"}}>{seg.slice(2,-2)}</span>;
               const linkMatch = seg.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
               if (linkMatch) {
                 const isExt = linkMatch[2].startsWith("http");
