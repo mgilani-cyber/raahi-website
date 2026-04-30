@@ -23,18 +23,24 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
-        <Layout>
-          <Routes>
-            <Route path="/"             element={<Index />} />
-            <Route path="/menus"        element={<Menus />} />
-            <Route path="/gallery"      element={<Gallery />} />
-            <Route path="/events"       element={<BookEvent />} />
-            <Route path="/reservations" element={<Reservations />} />
-            <Route path="/story"        element={<Story />} />
-            <Route path="/gift-cards"   element={<GiftCards />} />
-            <Route path="*"             element={<NotFound />} />
-          </Routes>
-        </Layout>
+        <Routes>
+          {/* Gallery is fullscreen — no Layout wrapper */}
+          <Route path="/gallery" element={<Gallery />} />
+          {/* All other pages use Layout */}
+          <Route path="/*" element={
+            <Layout>
+              <Routes>
+                <Route path="/"             element={<Index />} />
+                <Route path="/menus"        element={<Menus />} />
+                <Route path="/events"       element={<BookEvent />} />
+                <Route path="/reservations" element={<Reservations />} />
+                <Route path="/story"        element={<Story />} />
+                <Route path="/gift-cards"   element={<GiftCards />} />
+                <Route path="*"             element={<NotFound />} />
+              </Routes>
+            </Layout>
+          } />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
