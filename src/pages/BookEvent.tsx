@@ -42,7 +42,7 @@ function CateringForm({ onClose }: { onClose: () => void }) {
         date: form.date,
         notes: form.notes,
       });
-      await fetch("https://script.google.com/macros/s/AKfycbyHB2emc8X67DV7qUwO8uAYBr20mPP8ipJVqGWL1OF5HGpyWTi-N8PGmAlsp7tPme7I/exec?" + params.toString(), {
+      await fetch("https://script.google.com/macros/s/AKfycbz9l6SCc6_bC0nJ_nZQ4AtY9GRgPoiR-jajlAFzFguynP8-Nr5-V8PoEOi3ulyJlpbD/exec?" + params.toString(), {
         method: "GET",
         mode: "no-cors",
       });
