@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import { RESERVATION_URL } from "@/constants";
@@ -84,30 +85,26 @@ export default function Story() {
 
   return (
     <div style={{background:T,minHeight:"100vh"}}>
-      {/* Hero */}
-      <div className="relative overflow-hidden" style={{minHeight:"75vh",display:"flex",alignItems:"center",justifyContent:"center"}}>
-        <motion.div className="absolute inset-0 scale-[1.15]" style={{y:heroY}}>
-          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80"
-            alt="Raahi Story" className="w-full h-full object-cover"
-            style={{filter:"brightness(0.22) saturate(0.6)"}}/>
-          <div className="absolute inset-0" style={{background:"linear-gradient(to bottom,rgba(11,30,20,0.4),rgba(11,30,20,0.8))"}}/>
-        </motion.div>
-        <motion.div className="relative z-10 text-center px-6 max-w-3xl" style={{y:heroY,opacity:heroOp,paddingTop:"80px"}}>
-          <motion.span className="section-label" style={{marginBottom:"1.5rem",display:"block",textAlign:"center"}}
-            initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:0.3}}>
-            Our Story
-          </motion.span>
-          <motion.h1 style={{fontFamily:"Cormorant Garamond,Georgia,serif",fontStyle:"italic",fontSize:"clamp(3rem,8vw,6.5rem)",color:I,lineHeight:0.92,marginBottom:"1.5rem"}}
-            initial={{opacity:0,y:28}} animate={{opacity:1,y:0}} transition={{delay:0.45,duration:1}}>
-            One Thousand Flavors<br/>in One Place
-          </motion.h1>
-          <motion.div className="gold-rule" style={{width:"60px",margin:"0 auto 1.5rem"}}
-            initial={{width:0}} animate={{width:"60px"}} transition={{delay:0.8,duration:0.7}}/>
-          <motion.p style={{fontFamily:"Jost,sans-serif",fontSize:"16px",color:"rgba(232,224,204,0.42)",maxWidth:"480px",margin:"0 auto",lineHeight:1.95}}
-            initial={{opacity:0}} animate={{opacity:1}} transition={{delay:1}}>
-            An authentic Indian restaurant — where every dish tells a story, and every visit feels like coming home.
-          </motion.p>
-        </motion.div>
+      {/* Hero with ContainerScroll */}
+      <div style={{background:"#0b1e14",paddingTop:"80px"}}>
+        <ContainerScroll
+          titleComponent={
+            <div style={{textAlign:"center",paddingBottom:"2rem"}}>
+              <span className="section-label" style={{marginBottom:"1.2rem",display:"block",textAlign:"center"}}>Our Story</span>
+              <h1 style={{fontFamily:"Cormorant Garamond,Georgia,serif",fontStyle:"italic",fontSize:"clamp(2.5rem,6vw,5rem)",color:I,lineHeight:0.95,marginBottom:"1rem"}}>
+                One Thousand Flavors<br/>in One Place
+              </h1>
+              <div className="gold-rule" style={{width:"60px",margin:"1rem auto"}}/>
+              <p style={{fontFamily:"Jost,sans-serif",fontSize:"15px",color:"rgba(232,224,204,0.42)",maxWidth:"480px",margin:"0 auto",lineHeight:1.9}}>
+                An authentic Indian restaurant — where every dish tells a story, and every visit feels like coming home.
+              </p>
+            </div>
+          }>
+          <img
+            src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80"
+            alt="Raahi Story"
+            style={{width:"100%",height:"100%",objectFit:"cover",filter:"brightness(0.75) saturate(0.85)"}}/>
+        </ContainerScroll>
       </div>
 
       {/* Chapter sections — alternating slide-in */}
