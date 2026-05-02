@@ -96,7 +96,7 @@ function CustomEventForm({ onClose }: { onClose: () => void }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    window.open("https://buy.stripe.com/your_payment_link", "_blank");
+    window.open("https://buy.stripe.com/eVqfZg8ldcZ6dxUe3X83C00", "_blank");
   };
 
   return (
