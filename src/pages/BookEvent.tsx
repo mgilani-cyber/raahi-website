@@ -31,7 +31,7 @@ function CateringForm({ onClose }: { onClose: () => void }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const payload = {
+      const params = new URLSearchParams({
         eventType: modal || "catering",
         firstName: form.firstName,
         lastName: form.lastName,
@@ -41,12 +41,10 @@ function CateringForm({ onClose }: { onClose: () => void }) {
         event: form.event,
         date: form.date,
         notes: form.notes,
-      };
-      await fetch("https://script.google.com/macros/s/AKfycbyHB2emc8X67DV7qUwO8uAYBr20mPP8ipJVqGWL1OF5HGpyWTi-N8PGmAlsp7tPme7I/exec", {
-        method: "POST",
+      });
+      await fetch("https://script.google.com/macros/s/AKfycbyHB2emc8X67DV7qUwO8uAYBr20mPP8ipJVqGWL1OF5HGpyWTi-N8PGmAlsp7tPme7I/exec?" + params.toString(), {
+        method: "GET",
         mode: "no-cors",
-        headers: { "Content-Type": "text/plain" },
-        body: JSON.stringify(payload),
       });
     } catch(err) {
       console.log("Sheet error", err);
