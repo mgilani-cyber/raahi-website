@@ -175,7 +175,10 @@ export default function BookEvent() {
             <div key={ev.id}
               style={{
                 position:"relative", overflow:"hidden", cursor:"pointer",
-                flex: active===i ? "4 1 0%" : "1 1 0%",
+                backgroundImage:`url(${ev.img})`,
+            backgroundSize:"cover",
+            backgroundPosition:"center",
+            flex: active===i ? "4 1 0%" : "1 1 0%",
                 borderRadius:"4px",
                 transition:"flex 0.6s cubic-bezier(0.25,0.46,0.45,0.94)",
                 border: active===i ? "1px solid rgba(212,175,88,0.45)" : "1px solid rgba(212,175,88,0.1)",
