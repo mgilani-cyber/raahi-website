@@ -132,7 +132,7 @@ function Hero() {
       </motion.div>
 
       {/* Hero text — scrolls away */}
-      <motion.div className="absolute inset-0 flex flex-col items-center justify-end z-[3] px-6 text-center pb-20"
+      <motion.div className="absolute inset-0 flex flex-col items-center justify-center z-[3] px-6 text-center pt-16"
         style={{y:textY,opacity:op,pointerEvents:"none"}}>
         <motion.p initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:0.3}}
           style={{fontFamily:"Jost,sans-serif",fontSize:"9px",letterSpacing:"0.65em",color:G,textTransform:"uppercase",marginBottom:"0.8rem",opacity:0.8}}>
