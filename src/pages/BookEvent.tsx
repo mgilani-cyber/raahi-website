@@ -18,10 +18,10 @@ const labelStyle = {
 };
 
 const EVENTS = [
-  { id:"catering",  label:"Catering",       num:"01", desc:"We bring Raahi to your event. Weddings, office parties, private functions." },
-  { id:"birthday",  label:"Birthdays",       num:"02", desc:"Make it memorable. Private space, custom menu, dedicated service." },
-  { id:"corporate", label:"Corporate Events", num:"03", desc:"Team dinners, client entertainment, seamless group dining." },
-  { id:"custom",    label:"Custom Event",     num:"04", desc:"Something unique? Tell us about it. Ticket price: $40 per person.", price:40 },
+  { id:"catering",  label:"Catering",        num:"01", img:"https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80", desc:"We bring Raahi to your event. Weddings, office parties, private functions." },
+  { id:"birthday",  label:"Birthdays",        num:"02", img:"https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=800&q=80", desc:"Make it memorable. Private space, custom menu, dedicated service." },
+  { id:"corporate", label:"Corporate Events",  num:"03", img:"https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80", desc:"Team dinners, client entertainment, seamless group dining." },
+  { id:"custom",    label:"Custom Event",      num:"04", img:"https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80", desc:"Something unique? Tell us about it. Ticket price: $40 per person.", price:40 },
 ];
 
 function CateringForm({ onClose }: { onClose: () => void }) {
@@ -180,7 +180,7 @@ export default function BookEvent() {
                 transition:"flex 0.6s cubic-bezier(0.25,0.46,0.45,0.94)",
                 border: active===i ? "1px solid rgba(212,175,88,0.45)" : "1px solid rgba(212,175,88,0.1)",
                 minWidth:0,
-                background: active===i ? "rgba(212,175,88,0.04)" : "rgba(12,30,20,0.8)",
+    
               }}
               onMouseEnter={() => setActive(i)}>
 
