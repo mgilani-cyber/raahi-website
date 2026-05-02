@@ -18,10 +18,10 @@ const labelStyle = {
 };
 
 const EVENTS = [
-  { id:"catering",  label:"Catering",        num:"01", img:"https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80", desc:"We bring Raahi to your event. Weddings, office parties, private functions." },
-  { id:"birthday",  label:"Birthdays",        num:"02", img:"https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?w=800&q=80", desc:"Make it memorable. Private space, custom menu, dedicated service." },
-  { id:"corporate", label:"Corporate Events",  num:"03", img:"https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80", desc:"Team dinners, client entertainment, seamless group dining." },
-  { id:"custom",    label:"Custom Event",      num:"04", img:"https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80", desc:"Something unique? Tell us about it. Ticket price: $40 per person.", price:40 },
+  { id:"catering",  label:"Catering",        num:"01", img:"https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=1200&q=90", desc:"We bring Raahi to your event. Weddings, office parties, private functions." },
+  { id:"birthday",  label:"Birthdays",        num:"02", img:"https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1200&q=90", desc:"Make it memorable. Private space, custom menu, dedicated service." },
+  { id:"corporate", label:"Corporate Events",  num:"03", img:"https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1200&q=90", desc:"Team dinners, client entertainment, seamless group dining." },
+  { id:"custom",    label:"Custom Event",      num:"04", img:"https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1200&q=90", desc:"Something unique? Tell us about it. Ticket price: $40 per person.", price:40 },
 ];
 
 function CateringForm({ onClose }: { onClose: () => void }) {
