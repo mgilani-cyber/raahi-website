@@ -31,21 +31,22 @@ function CateringForm({ onClose }: { onClose: () => void }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const payload = {
+        eventType: modal || "catering",
+        firstName: form.firstName,
+        lastName: form.lastName,
+        phone: form.phone,
+        email: form.email,
+        guests: form.guests,
+        event: form.event,
+        date: form.date,
+        notes: form.notes,
+      };
       await fetch("https://script.google.com/macros/s/AKfycbyHB2emc8X67DV7qUwO8uAYBr20mPP8ipJVqGWL1OF5HGpyWTi-N8PGmAlsp7tPme7I/exec", {
         method: "POST",
         mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          eventType: modal,
-          firstName: form.firstName,
-          lastName: form.lastName,
-          phone: form.phone,
-          email: form.email,
-          guests: form.guests,
-          event: form.event,
-          date: form.date,
-          notes: form.notes,
-        }),
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify(payload),
       });
     } catch(err) {
       console.log("Sheet error", err);
