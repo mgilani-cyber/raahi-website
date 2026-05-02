@@ -7,17 +7,17 @@ import { RESERVATION_URL } from "@/constants";
 const G="#d4af58",I="#e8e0cc",T="#081910",D="#0c1e14";
 
 const CAT_IMAGES: Record<string,string> = {
-  "starters":     "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=1200&q=80",
-  "street-eats":  "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=1200&q=80",
-  "tandoor":      "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=1200&q=80",
-  "dosa":         "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d6?w=1200&q=80",
-  "indo-chinese": "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=1200&q=80",
-  "mains-veg":    "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1200&q=80",
-  "mains-nonveg": "https://images.unsplash.com/photo-1574653853027-5382a3d23a15?w=1200&q=80",
-  "biryani":      "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=1200&q=80",
-  "breads":       "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1200&q=80",
-  "desserts":     "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1200&q=80",
-  "drinks":       "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1200&q=80",
+  "starters":     "https://images.pexels.com/photos/2679501/pexels-photo-2679501.jpeg?w=1200",
+  "street-eats":  "https://images.pexels.com/photos/1117194/pexels-photo-1117194.jpeg?w=1200",
+  "tandoor":      "https://images.pexels.com/photos/7625056/pexels-photo-7625056.jpeg?w=1200",
+  "dosa":         "https://images.pexels.com/photos/5560763/pexels-photo-5560763.jpeg?w=1200",
+  "indo-chinese": "https://images.pexels.com/photos/1907244/pexels-photo-1907244.jpeg?w=1200",
+  "mains-veg":    "https://images.pexels.com/photos/6260921/pexels-photo-6260921.jpeg?w=1200",
+  "mains-nonveg": "https://images.pexels.com/photos/2338407/pexels-photo-2338407.jpeg?w=1200",
+  "biryani":      "https://images.pexels.com/photos/7353380/pexels-photo-7353380.jpeg?w=1200",
+  "breads":       "https://images.pexels.com/photos/1117194/pexels-photo-1117194.jpeg?w=1200",
+  "desserts":     "https://images.pexels.com/photos/3782788/pexels-photo-3782788.jpeg?w=1200",
+  "drinks":       "https://images.pexels.com/photos/3407777/pexels-photo-3407777.jpeg?w=1200",
 };
 
 function ItemRow({ item }: { item: any }) {
