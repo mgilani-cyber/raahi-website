@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, MapPin, Clock, Phone } from "lucide-react";
 import { RESERVATION_URL, INSTAGRAM_URL, PHONE_NUMBER, PHONE_SECONDARY, GOOGLE_MAPS_URL } from "@/constants";
+import SmoothScrollHero from "@/components/ui/smooth-scroll-hero";
 import { ImageAutoSlider } from "@/components/ui/image-auto-slider";
 
 const G="#d4af58",I="#e8e0cc",T="#0b1e14",D="#0f2818";
@@ -88,20 +89,22 @@ const MARQUEE=["Butter Chicken","Chicken Biryani","Raahi Hurricane","Sarson Da S
 
 function Hero() {
   const {scrollY}=useScroll();
-  const bgY=useTransform(scrollY,[0,700],[0,150]);
   const textY=useTransform(scrollY,[0,500],[0,100]);
   const op=useTransform(scrollY,[0,400],[1,0]);
 
   return (
-    <div className="relative overflow-hidden" style={{height:"100vh",minHeight:"600px"}}>
-
-      {/* BG image — less dark so it shows */}
-      <motion.div className="absolute inset-0 scale-[1.12]" style={{y:bgY}}>
-        <img src="/raahi/11.03.25RaahiIndianKitchen_0013.jpg"
-          className="w-full h-full object-cover"
-          style={{filter:"brightness(0.42) saturate(0.75)"}}/>
-        <div className="absolute inset-0" style={{background:"linear-gradient(to bottom,rgba(11,30,20,0.2) 0%,rgba(11,30,20,0.45) 50%,rgba(11,30,20,0.92) 100%)"}}/>
-      </motion.div>
+    <div className="relative" style={{minHeight:"100vh"}}>
+      {/* SmoothScrollHero background */}
+      <div className="absolute inset-0 z-0">
+        <SmoothScrollHero
+          scrollHeight={1200}
+          desktopImage="/raahi/11.03.25RaahiIndianKitchen_0013.jpg"
+          mobileImage="/raahi/11.03.25RaahiIndianKitchen_0038.jpg"
+          initialClipPercentage={20}
+          finalClipPercentage={80}
+        />
+      </div>
+      <div className="absolute inset-0 z-[1]" style={{background:"linear-gradient(to bottom,rgba(11,30,20,0.3) 0%,rgba(11,30,20,0.5) 60%,rgba(11,30,20,0.92) 100%)",pointerEvents:"none"}}/>
 
       {/* Floating video frame — Indian restaurant/food video */}
       <motion.div className="absolute inset-0 flex items-center justify-center z-[2] pointer-events-none"
