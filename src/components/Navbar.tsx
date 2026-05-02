@@ -68,7 +68,7 @@ export const Navbar = () => {
 
           {/* Reserve button */}
           <div className="flex items-center gap-3">
-            <Link to="/reservations"
+            <a href="https://reservations.shift4payments.com/#/28a60320-b36c-4294-9eb4-0bc1b1d8e019" target="_blank" rel="noopener noreferrer"
               className="hidden md:inline-flex btn-primary-outline"
               style={{ fontSize: "10px", padding: "0.6rem 1.6rem", borderColor: "#d4af58", color: "#d4af58" }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color=T; }}
