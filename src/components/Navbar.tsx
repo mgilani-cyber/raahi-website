@@ -44,7 +44,7 @@ export const Navbar = () => {
           <Link to="/" className="shrink-0 z-10">
             <img src="/raahi-logo.png" alt="Raahi Indian Kitchen"
               style={{ height: scrolled ? "44px" : "52px", width: "auto", transition: "height 0.4s ease", filter: "brightness(1.05)" }} />
-          </Link>
+          </a>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
@@ -62,7 +62,7 @@ export const Navbar = () => {
                 onMouseEnter={e => { if(location.pathname!==l.path)(e.currentTarget as HTMLElement).style.color=I; }}
                 onMouseLeave={e => { if(location.pathname!==l.path)(e.currentTarget as HTMLElement).style.color="rgba(232,224,204,0.55)"; }}>
                 {l.label}
-              </Link>
+              </a>
             ))}
           </nav>
 
@@ -74,7 +74,7 @@ export const Navbar = () => {
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color=T; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color="#d4af58"; }}>
               Reserve
-            </Link>
+            </a>
             <button onClick={() => setOpen(o => !o)}
               className="flex flex-col gap-[5px] w-11 h-11 items-center justify-center lg:hidden">
               <span style={{ width:22, height:1, background:I, display:"block", transition:"transform 0.3s", transform: open?"rotate(45deg) translate(4px,4px)":"none" }}/>
@@ -105,7 +105,7 @@ export const Navbar = () => {
                     <span style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"2rem", color: location.pathname===item.path?"#d4af58":I }}>
                       {item.label}
                     </span>
-                  </Link>
+                  </a>
                 </motion.div>
               ))}
             </nav>
@@ -113,7 +113,7 @@ export const Navbar = () => {
               <Link to="/reservations" onClick={() => setOpen(false)}
                 className="btn-primary-outline w-full text-center block" style={{ borderColor:"#d4af58", color:"#d4af58" }}>
                 Reserve a Table
-              </Link>
+              </a>
             </div>
           </motion.div>
         )}
