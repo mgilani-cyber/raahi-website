@@ -31,6 +31,33 @@ const labelStyle = {
   color:"rgba(212,175,88,0.6)", textTransform:"uppercase" as const, display:"block", marginBottom:"8px",
 };
 
+
+const SLIDES = [
+  "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80",
+  "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=1600&q=80",
+  "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1600&q=80",
+  "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1600&q=80",
+];
+
+function ReservationSlideshow() {
+  const [idx, setIdx] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setIdx(i => (i+1) % SLIDES.length), 4000);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <div style={{ position:"absolute", inset:0, zIndex:0 }}>
+      <AnimatePresence mode="wait">
+        <motion.img key={idx} src={SLIDES[idx]} alt=""
+          initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
+          transition={{ duration:1 }}
+          style={{ width:"100%", height:"100%", objectFit:"cover", filter:"brightness(0.22)" }}/>
+      </AnimatePresence>
+      <div style={{ position:"absolute", inset:0, background:"linear-gradient(135deg,rgba(8,25,16,0.7),rgba(8,25,16,0.5))" }}/>
+    </div>
+  );
+}
+
 export default function Reservations() {
   const [form, setForm] = useState({ partySize:"2 Guests", date:"", time:"7:00 PM", name:"", email:"", phone:"", notes:"" });
   const [submitted, setSubmitted] = useState(false);
@@ -50,7 +77,9 @@ export default function Reservations() {
     <div style={{ background:T, minHeight:"100vh" }}>
 
       {/* Hero */}
-      <div style={{ background:"linear-gradient(135deg,#081910 0%,#0f2818 50%,#081910 100%)", paddingTop:"120px", paddingBottom:"80px", borderBottom:"1px solid rgba(212,175,88,0.12)", position:"relative", overflow:"hidden" }}>
+      <div style={{ paddingTop:"120px", paddingBottom:"80px", borderBottom:"1px solid rgba(212,175,88,0.12)", position:"relative", overflow:"hidden", minHeight:"50vh", display:"flex", alignItems:"center" }}>
+        {/* Slideshow background */}
+        <ReservationSlideshow/>
         {/* Decorative gold circles */}
         <div style={{ position:"absolute", top:"-100px", right:"-100px", width:"400px", height:"400px", borderRadius:"50%", border:"1px solid rgba(212,175,88,0.06)", pointerEvents:"none" }}/>
         <div style={{ position:"absolute", top:"-60px", right:"-60px", width:"280px", height:"280px", borderRadius:"50%", border:"1px solid rgba(212,175,88,0.04)", pointerEvents:"none" }}/>
@@ -61,7 +90,7 @@ export default function Reservations() {
             Reserve Your Table
           </motion.span>
           <motion.h1 initial={{opacity:0,y:24}} animate={{opacity:1,y:0}} transition={{delay:0.35}}
-            style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"clamp(3rem,7vw,6rem)", color:I, lineHeight:0.9, marginBottom:"1.5rem" }}>
+            style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"clamp(1.8rem,3.5vw,3rem)", color:I, lineHeight:0.9, marginBottom:"1.5rem" }}>
             Join us for<br /><span style={{color:G}}>an unforgettable</span><br />evening.
           </motion.h1>
           <div className="gold-rule" style={{width:"80px",marginBottom:"1.5rem"}}/>
