@@ -96,7 +96,7 @@ function CustomEventForm({ onClose }: { onClose: () => void }) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const stripeUrl = `https://buy.stripe.com/eVqfZg8ldcZ6dxUe3X83C00?prefilled_email=${encodeURIComponent(form.email)}&quantity=${tickets}`;
+    const stripeUrl = `https://buy.stripe.com/eVqfZg8ldcZ6dxUe3X83C00?prefilled_email=${encodeURIComponent(form.email)}&quantity=${tickets}&prefilled_promo_code=&locale=auto`;
     window.open(stripeUrl, "_blank");
   };
 
