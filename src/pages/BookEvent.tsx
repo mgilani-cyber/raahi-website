@@ -28,8 +28,28 @@ function CateringForm({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState({ firstName:"", lastName:"", phone:"", email:"", guests:"", event:"", date:"", notes:"" });
   const [sent, setSent] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      await fetch("https://script.google.com/macros/s/AKfycbyHB2emc8X67DV7qUwO8uAYBr20mPP8ipJVqGWL1OF5HGpyWTi-N8PGmAlsp7tPme7I/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          eventType: modal,
+          firstName: form.firstName,
+          lastName: form.lastName,
+          phone: form.phone,
+          email: form.email,
+          guests: form.guests,
+          event: form.event,
+          date: form.date,
+          notes: form.notes,
+        }),
+      });
+    } catch(err) {
+      console.log("Sheet error", err);
+    }
     setSent(true);
   };
 
