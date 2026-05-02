@@ -93,7 +93,6 @@ function CustomEventForm({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState({ firstName:"", lastName:"", phone:"", email:"", tickets:"1" });
   const tickets = parseInt(form.tickets)||1;
   const [loading, setLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
   const total = tickets * 40;
 
   const handleSubmit = (e: React.FormEvent) => {
