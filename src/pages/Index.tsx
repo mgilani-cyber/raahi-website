@@ -97,11 +97,11 @@ function Hero() {
       {/* SmoothScrollHero background */}
       <div className="absolute inset-0 z-0">
         <SmoothScrollHero
-          scrollHeight={1200}
+          scrollHeight={600}
           desktopImage="/raahi/11.03.25RaahiIndianKitchen_0013.jpg"
           mobileImage="/raahi/11.03.25RaahiIndianKitchen_0038.jpg"
-          initialClipPercentage={20}
-          finalClipPercentage={80}
+          initialClipPercentage={15}
+          finalClipPercentage={85}
         />
       </div>
       <div className="absolute inset-0 z-[1]" style={{background:"linear-gradient(to bottom,rgba(11,30,20,0.3) 0%,rgba(11,30,20,0.5) 60%,rgba(11,30,20,0.92) 100%)",pointerEvents:"none"}}/>
