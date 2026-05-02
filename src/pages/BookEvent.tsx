@@ -92,6 +92,7 @@ function CateringForm({ onClose }: { onClose: () => void }) {
 function CustomEventForm({ onClose }: { onClose: () => void }) {
   const [form, setForm] = useState({ firstName:"", lastName:"", phone:"", email:"", tickets:"1" });
   const tickets = parseInt(form.tickets)||1;
+  const [loading, setLoading] = useState(false);
   const total = tickets * 40;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -136,7 +137,7 @@ function CustomEventForm({ onClose }: { onClose: () => void }) {
               <p style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"1.8rem", color:G }}>${total}</p>
             </div>
           </div>
-          <button type="submit" className="btn-primary-outline" style={{ textAlign:"center" }}>Continue to Payment →</button>
+          <button type="submit" disabled={loading} className="btn-primary-outline" style={{ textAlign:"center", opacity:loading?0.6:1 }}>{loading ? "Redirecting..." : "Continue to Payment →"}</button>
           <p style={{ fontFamily:"Jost,sans-serif", fontSize:"11px", color:"rgba(232,224,204,0.25)", textAlign:"center" }}>You will be taken to Stripe secure payment.</p>
         </form>
       </motion.div>
