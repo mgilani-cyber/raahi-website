@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
+import ScrollExpandMedia from "@/components/ui/scroll-expansion-hero";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, MapPin, Clock, Phone } from "lucide-react";
 import { RESERVATION_URL, INSTAGRAM_URL, PHONE_NUMBER, PHONE_SECONDARY, GOOGLE_MAPS_URL } from "@/constants";
@@ -87,79 +88,15 @@ const REVIEWS=[
 const MARQUEE=["Butter Chicken","Chicken Biryani","Raahi Hurricane","Sarson Da Saag","Mango Lassi","Gol Gappe","Masala Dosa","Lamb Chops","Raahi Margaritas","Gulab Jamun","Palak Paneer","Tandoori Salmon"];
 
 function Hero() {
-  const {scrollY}=useScroll();
-  const bgY=useTransform(scrollY,[0,700],[0,150]);
-  const textY=useTransform(scrollY,[0,500],[0,100]);
-  const op=useTransform(scrollY,[0,400],[1,0]);
-
   return (
-    <div className="relative overflow-hidden" style={{height:"100vh",minHeight:"600px"}}>
-      <motion.div className="absolute inset-0 scale-[1.12]" style={{y:bgY}}>
-        <img src="/raahi/11.03.25RaahiIndianKitchen_0013.jpg"
-          className="w-full h-full object-cover"
-          style={{filter:"brightness(0.42) saturate(0.75)"}}/>
-        <div className="absolute inset-0" style={{background:"linear-gradient(to bottom,rgba(11,30,20,0.2) 0%,rgba(11,30,20,0.45) 50%,rgba(11,30,20,0.92) 100%)"}}/>
-      </motion.div>
-
-      {/* Floating video frame — Indian restaurant/food video */}
-      <motion.div className="absolute inset-0 flex items-center justify-center z-[2] pointer-events-none"
-        style={{y:useTransform(scrollY,[0,700],[0,80]),opacity:op}}>
-        <motion.div
-          initial={{opacity:0,scale:0.88,y:20}}
-          animate={{opacity:1,scale:1,y:0}}
-          transition={{delay:0.7,duration:1.1,ease:[0.25,0.46,0.45,0.94]}}
-          style={{
-            width:"clamp(260px,38vw,520px)",
-            aspectRatio:"16/9",
-            border:`1px solid rgba(212,175,88,0.4)`,
-            boxShadow:"0 0 60px rgba(212,175,88,0.06), 0 40px 100px rgba(0,0,0,0.7)",
-            overflow:"hidden",
-            position:"relative",
-            marginBottom:"160px",
-          }}>
-          {/* Gold frame lines */}
-          <div style={{position:"absolute",top:0,left:0,right:0,height:"1px",background:`linear-gradient(90deg,transparent,${G},transparent)`,zIndex:10}}/>
-          <div style={{position:"absolute",bottom:0,left:0,right:0,height:"1px",background:`linear-gradient(90deg,transparent,${G},transparent)`,zIndex:10}}/>
-          <div style={{position:"absolute",top:"10px",left:"10px",width:"18px",height:"1px",background:G,zIndex:10,opacity:0.7}}/>
-          <div style={{position:"absolute",top:"10px",left:"10px",width:"1px",height:"18px",background:G,zIndex:10,opacity:0.7}}/>
-          <div style={{position:"absolute",bottom:"10px",right:"10px",width:"18px",height:"1px",background:G,zIndex:10,opacity:0.7}}/>
-          <div style={{position:"absolute",bottom:"10px",right:"10px",width:"1px",height:"18px",background:G,zIndex:10,opacity:0.7}}/>
-          {/* Indian restaurant video */}
-          <img src="/raahi/11.03.25RaahiIndianKitchen_0038.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
-        </motion.div>
-      </motion.div>
-
-      {/* Hero text — scrolls away */}
-      <motion.div className="absolute inset-0 flex flex-col items-center justify-center z-[3] px-6 text-center pt-16"
-        style={{y:textY,opacity:op,pointerEvents:"none"}}>
-        <motion.p initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:0.3}}
-          style={{fontFamily:"Jost,sans-serif",fontSize:"9px",letterSpacing:"0.65em",color:G,textTransform:"uppercase",marginBottom:"0.8rem",opacity:0.8}}>
-          Indian Kitchen
-        </motion.p>
-        <motion.h1 initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:0.5,duration:0.9}}
-          style={{fontFamily:"Cormorant Garamond,Georgia,serif",fontStyle:"italic",fontSize:"clamp(3rem,7vw,6rem)",color:I,lineHeight:0.95,marginBottom:"1rem"}}>
-          Raahi
-        </motion.h1>
-        <motion.div initial={{width:0}} animate={{width:"50px"}} transition={{delay:0.9,duration:0.6}}
-          style={{height:"1px",background:`linear-gradient(90deg,transparent,${G},transparent)`,margin:"0 auto 1rem"}}/>
-        <motion.p initial={{opacity:0}} animate={{opacity:1}} transition={{delay:1.1}}
-          style={{fontFamily:"Jost,sans-serif",fontSize:"14px",color:"rgba(232,224,204,0.5)",lineHeight:1.85,maxWidth:"400px",marginBottom:"1.8rem"}}>
-          Traditional Indian food, done properly.
-        </motion.p>
-        <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{delay:1.3}}
-          className="flex flex-col sm:flex-row gap-3 justify-center pointer-events-auto">
-          <Link to="/reservations" className="btn-primary-outline" style={{fontSize:"10px",padding:"0.7rem 1.8rem"}}>Reserve a Table</Link>
-          <Link to="/menus" className="btn-dark-filled" style={{fontSize:"10px",padding:"0.7rem 1.8rem"}}>Explore the Menu</Link>
-        </motion.div>
-      </motion.div>
-
-      {/* Scroll cue */}
-      <motion.div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-[4]"
-        initial={{opacity:0}} animate={{opacity:1}} transition={{delay:1.8}}>
-        <motion.div style={{width:1,height:32,background:`linear-gradient(to bottom,${G},transparent)`}}
-          animate={{scaleY:[0.3,1,0.3]}} transition={{duration:2,repeat:Infinity}}/>
-      </motion.div>
-    </div>
+    <ScrollExpandMedia
+      mediaType="image"
+      mediaSrc="/raahi/11.03.25RaahiIndianKitchen_0038.jpg"
+      bgImageSrc="/raahi/11.03.25RaahiIndianKitchen_0013.jpg"
+      title="Raahi Indian Kitchen"
+      subtitle="Traditional Indian food, done properly."
+      scrollToExpand="Scroll to enter"
+    />
   );
 }
 
