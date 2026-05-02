@@ -1,27 +1,158 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { PHONE_NUMBER, EMAIL } from "@/constants";
+import { motion, AnimatePresence } from "framer-motion";
 
-const T="#113122",R="#a34d26",I="#e8e0cc",D="#0a1f15";
+const G="#d4af58",I="#e8e0cc",T="#081910",D="#0c1e14";
+
+const inputStyle = {
+  width:"100%", background:"rgba(212,175,88,0.04)",
+  border:"1px solid rgba(212,175,88,0.15)", color:I,
+  padding:"13px 16px", fontFamily:"Jost,sans-serif",
+  fontSize:"13px", outline:"none", borderRadius:"2px",
+  transition:"border-color 0.3s",
+} as React.CSSProperties;
+
+const labelStyle = {
+  fontFamily:"Jost,sans-serif", fontSize:"9px",
+  letterSpacing:"0.45em", color:"rgba(212,175,88,0.6)",
+  textTransform:"uppercase" as const, display:"block", marginBottom:"8px",
+};
 
 const EVENTS = [
-  { num:"01", title:"Private Dining",   img:"https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80", desc:"Birthdays, anniversaries, family celebrations. We can accommodate private groups in a dedicated space. Call us to discuss menus and arrangements.", cta:"Call to Book", link:"tel:+13467680068" },
-  { num:"02", title:"Corporate Events", img:"https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80", desc:"Team dinners, client entertainment, office celebrations. We work with businesses for seamless group dining experiences.", cta:"Get in Touch", link:"mailto:"+EMAIL },
-  { num:"03", title:"Weekend Specials", img:"https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&q=80", desc:"Live music, chef specials, curated menus — follow us on Instagram or call to find out what's happening this weekend at Raahi.", cta:"Follow Us", link:"https://www.instagram.com/raahi_hou/" },
-  { num:"04", title:"Catering",         img:"https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&q=80", desc:"We bring Raahi to you. Indian catering for corporate events, weddings, and private parties. Inquire for custom menus.", cta:"Enquire Now", link:"mailto:Info@raahiindiankitchen.com" },
+  { id:"catering",  label:"Catering",       num:"01", desc:"We bring Raahi to your event. Weddings, office parties, private functions." },
+  { id:"birthday",  label:"Birthdays",       num:"02", desc:"Make it memorable. Private space, custom menu, dedicated service." },
+  { id:"corporate", label:"Corporate Events", num:"03", desc:"Team dinners, client entertainment, seamless group dining." },
+  { id:"custom",    label:"Custom Event",     num:"04", desc:"Something unique? Tell us about it. Ticket price: $40 per person.", price:40 },
 ];
 
+function CateringForm({ onClose }: { onClose: () => void }) {
+  const [form, setForm] = useState({ firstName:"", lastName:"", phone:"", email:"", guests:"", event:"", date:"", notes:"" });
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSent(true);
+  };
+
+  return (
+    <motion.div className="fixed inset-0 z-[80] flex items-center justify-center p-4"
+      style={{ background:"rgba(8,25,16,0.96)", backdropFilter:"blur(16px)" }}
+      initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
+      onClick={onClose}>
+      <motion.div style={{ background:D, border:"1px solid rgba(212,175,88,0.2)", maxWidth:"600px", width:"100%", maxHeight:"90vh", overflowY:"auto" }}
+        initial={{ y:40, opacity:0 }} animate={{ y:0, opacity:1 }} exit={{ y:40, opacity:0 }}
+        transition={{ duration:0.35 }} onClick={e => e.stopPropagation()}>
+
+        <div style={{ padding:"28px", borderBottom:"1px solid rgba(212,175,88,0.1)", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+          <div>
+            <p style={{ fontFamily:"Jost,sans-serif", fontSize:"9px", letterSpacing:"0.45em", color:G, textTransform:"uppercase", marginBottom:"4px", opacity:0.7 }}>Enquiry</p>
+            <h2 style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"1.8rem", color:I }}>Catering & Events</h2>
+          </div>
+          <button onClick={onClose} style={{ color:"rgba(232,224,204,0.3)", background:"none", border:"none", cursor:"pointer", fontSize:"22px" }}>×</button>
+        </div>
+
+        {!sent ? (
+          <form onSubmit={handleSubmit} style={{ padding:"28px", display:"flex", flexDirection:"column", gap:"18px" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"14px" }}>
+              <div><label style={labelStyle}>First Name</label><input required style={inputStyle} placeholder="Jane" value={form.firstName} onChange={e=>setForm(f=>({...f,firstName:e.target.value}))}/></div>
+              <div><label style={labelStyle}>Last Name</label><input required style={inputStyle} placeholder="Smith" value={form.lastName} onChange={e=>setForm(f=>({...f,lastName:e.target.value}))}/></div>
+            </div>
+            <div><label style={labelStyle}>Phone Number</label><input required type="tel" style={inputStyle} placeholder="+1 (713) 000-0000" value={form.phone} onChange={e=>setForm(f=>({...f,phone:e.target.value}))}/></div>
+            <div><label style={labelStyle}>Email Address</label><input required type="email" style={inputStyle} placeholder="jane@example.com" value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))}/></div>
+            <div><label style={labelStyle}>Number of Guests</label>
+              <select required style={{...inputStyle,cursor:"pointer"}} value={form.guests} onChange={e=>setForm(f=>({...f,guests:e.target.value}))}>
+                <option value="">Select...</option>
+                {["10-20","21-50","51-100","101-200","200+"].map(o=><option key={o} value={o} style={{background:D,color:I}}>{o} guests</option>)}
+              </select>
+            </div>
+            <div><label style={labelStyle}>Type of Event</label>
+              <select required style={{...inputStyle,cursor:"pointer"}} value={form.event} onChange={e=>setForm(f=>({...f,event:e.target.value}))}>
+                <option value="">Select...</option>
+                {["Wedding","Birthday","Corporate Dinner","Office Party","Private Celebration","Other"].map(o=><option key={o} value={o} style={{background:D,color:I}}>{o}</option>)}
+              </select>
+            </div>
+            <div><label style={labelStyle}>Preferred Date</label><input type="date" style={inputStyle} value={form.date} onChange={e=>setForm(f=>({...f,date:e.target.value}))}/></div>
+            <div><label style={labelStyle}>Additional Details</label>
+              <textarea style={{...inputStyle,resize:"vertical",minHeight:"90px"}} placeholder="Tell us about your event, dietary requirements, special requests..." value={form.notes} onChange={e=>setForm(f=>({...f,notes:e.target.value}))}/>
+            </div>
+            <button type="submit" className="btn-primary-outline" style={{ textAlign:"center" }}>Submit Enquiry</button>
+            <p style={{ fontFamily:"Jost,sans-serif", fontSize:"11px", color:"rgba(232,224,204,0.25)", textAlign:"center" }}>We will get back to you within 24 hours.</p>
+          </form>
+        ) : (
+          <div style={{ padding:"60px 28px", textAlign:"center" }}>
+            <p style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"2rem", color:I, marginBottom:"12px" }}>Thank you!</p>
+            <div style={{ height:"1px", width:"50px", background:`linear-gradient(90deg,transparent,${G},transparent)`, margin:"0 auto 16px" }}/>
+            <p style={{ fontFamily:"Jost,sans-serif", fontSize:"13px", color:"rgba(232,224,204,0.4)", lineHeight:1.85 }}>We have received your enquiry and will be in touch within 24 hours.</p>
+          </div>
+        )}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function CustomEventForm({ onClose }: { onClose: () => void }) {
+  const [form, setForm] = useState({ firstName:"", lastName:"", phone:"", email:"", tickets:"1" });
+  const tickets = parseInt(form.tickets)||1;
+  const total = tickets * 40;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    window.open("https://buy.stripe.com/your_payment_link", "_blank");
+  };
+
+  return (
+    <motion.div className="fixed inset-0 z-[80] flex items-center justify-center p-4"
+      style={{ background:"rgba(8,25,16,0.96)", backdropFilter:"blur(16px)" }}
+      initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
+      onClick={onClose}>
+      <motion.div style={{ background:D, border:"1px solid rgba(212,175,88,0.2)", maxWidth:"540px", width:"100%", maxHeight:"90vh", overflowY:"auto" }}
+        initial={{ y:40, opacity:0 }} animate={{ y:0, opacity:1 }} exit={{ y:40, opacity:0 }}
+        transition={{ duration:0.35 }} onClick={e => e.stopPropagation()}>
+
+        <div style={{ padding:"28px", borderBottom:"1px solid rgba(212,175,88,0.1)", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+          <div>
+            <p style={{ fontFamily:"Jost,sans-serif", fontSize:"9px", letterSpacing:"0.45em", color:G, textTransform:"uppercase", marginBottom:"4px", opacity:0.7 }}>Book Tickets · $40 per person</p>
+            <h2 style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"1.8rem", color:I }}>Custom Event</h2>
+          </div>
+          <button onClick={onClose} style={{ color:"rgba(232,224,204,0.3)", background:"none", border:"none", cursor:"pointer", fontSize:"22px" }}>×</button>
+        </div>
+
+        <form onSubmit={handleSubmit} style={{ padding:"28px", display:"flex", flexDirection:"column", gap:"18px" }}>
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"14px" }}>
+            <div><label style={labelStyle}>First Name</label><input required style={inputStyle} placeholder="Jane" value={form.firstName} onChange={e=>setForm(f=>({...f,firstName:e.target.value}))}/></div>
+            <div><label style={labelStyle}>Last Name</label><input required style={inputStyle} placeholder="Smith" value={form.lastName} onChange={e=>setForm(f=>({...f,lastName:e.target.value}))}/></div>
+          </div>
+          <div><label style={labelStyle}>Phone Number</label><input required type="tel" style={inputStyle} placeholder="+1 (713) 000-0000" value={form.phone} onChange={e=>setForm(f=>({...f,phone:e.target.value}))}/></div>
+          <div><label style={labelStyle}>Email Address</label><input required type="email" style={inputStyle} placeholder="jane@example.com" value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))}/></div>
+          <div><label style={labelStyle}>Number of Tickets</label>
+            <select required style={{...inputStyle,cursor:"pointer"}} value={form.tickets} onChange={e=>setForm(f=>({...f,tickets:e.target.value}))}>
+              {[1,2,3,4,5,6,7,8,9,10].map(n=><option key={n} value={n} style={{background:D,color:I}}>{n} {n===1?"ticket":"tickets"}</option>)}
+            </select>
+          </div>
+          <div style={{ padding:"16px", background:"rgba(212,175,88,0.06)", border:"1px solid rgba(212,175,88,0.15)", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+            <p style={{ fontFamily:"Jost,sans-serif", fontSize:"11px", color:"rgba(232,224,204,0.45)" }}>$40 × {tickets} ticket{tickets>1?"s":""}</p>
+            <div style={{ textAlign:"right" }}>
+              <p style={{ fontFamily:"Jost,sans-serif", fontSize:"9px", letterSpacing:"0.35em", color:"rgba(212,175,88,0.5)", textTransform:"uppercase", marginBottom:"2px" }}>Total</p>
+              <p style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"1.8rem", color:G }}>${total}</p>
+            </div>
+          </div>
+          <button type="submit" className="btn-primary-outline" style={{ textAlign:"center" }}>Continue to Payment →</button>
+          <p style={{ fontFamily:"Jost,sans-serif", fontSize:"11px", color:"rgba(232,224,204,0.25)", textAlign:"center" }}>You will be taken to Stripe secure payment.</p>
+        </form>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function BookEvent() {
+  const [modal, setModal] = useState<string|null>(null);
   const [active, setActive] = useState(0);
 
   return (
     <div style={{ background:T, minHeight:"100vh" }}>
-
-      {/* Hero */}
-      <div style={{ background:D, paddingTop:"120px", paddingBottom:"64px", borderBottom:"1px solid rgba(163,77,38,0.15)" }}>
+      <div style={{ background:"linear-gradient(135deg,#081910,#0f2818,#081910)", paddingTop:"120px", paddingBottom:"64px", borderBottom:"1px solid rgba(212,175,88,0.1)" }}>
         <div className="container mx-auto px-6">
           <motion.p initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.2 }}
-            style={{ fontFamily:"Jost,sans-serif", fontSize:"10px", letterSpacing:"0.55em", color:R, textTransform:"uppercase", marginBottom:"1rem" }}>
+            style={{ fontFamily:"Jost,sans-serif", fontSize:"10px", letterSpacing:"0.55em", color:G, textTransform:"uppercase", marginBottom:"1rem", opacity:0.7 }}>
             Events & Private Dining
           </motion.p>
           <motion.h1 initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.35 }}
@@ -30,114 +161,61 @@ export default function BookEvent() {
           </motion.h1>
           <motion.p initial={{ opacity:0 }} animate={{ opacity:1 }} transition={{ delay:0.5 }}
             style={{ fontFamily:"Jost,sans-serif", fontSize:"15px", color:"rgba(232,224,204,0.45)", maxWidth:"480px", lineHeight:1.85 }}>
-            From intimate private dinners to large corporate events and catering — Raahi is built for occasions that deserve good food.
+            From intimate private dinners to large corporate events — Raahi is built for occasions that deserve great food.
           </motion.p>
         </div>
       </div>
 
-      {/* Accordion event cards */}
+      {/* Event cards accordion */}
       <div className="container mx-auto px-6 py-16">
         <div style={{ display:"flex", flexDirection:"row", gap:"8px", height:"520px", width:"100%" }}>
           {EVENTS.map((ev, i) => (
-            <div key={i}
+            <div key={ev.id}
               style={{
-                position:"relative",
-                overflow:"hidden",
-                cursor:"pointer",
+                position:"relative", overflow:"hidden", cursor:"pointer",
                 flex: active===i ? "4 1 0%" : "1 1 0%",
                 borderRadius:"4px",
                 transition:"flex 0.6s cubic-bezier(0.25,0.46,0.45,0.94)",
-                border: active===i ? "1px solid rgba(163,77,38,0.5)" : "1px solid rgba(163,77,38,0.15)",
+                border: active===i ? "1px solid rgba(212,175,88,0.45)" : "1px solid rgba(212,175,88,0.1)",
                 minWidth:0,
+                background: active===i ? "rgba(212,175,88,0.04)" : "rgba(12,30,20,0.8)",
               }}
               onMouseEnter={() => setActive(i)}>
 
-              {/* Background image */}
-              <img src={ev.img} alt={ev.title}
-                style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover",
-                  filter: active===i ? "brightness(0.5) saturate(0.85)" : "brightness(0.3) saturate(0.7)",
-                  transition:"filter 0.6s ease",
-                }}/>
+              {active===i && <div style={{ position:"absolute", top:0, left:0, right:0, height:"2px", background:`linear-gradient(90deg,transparent,${G},transparent)` }}/>}
 
-              {/* Gradient overlay */}
-              <div style={{ position:"absolute", inset:0, background:"linear-gradient(to top,rgba(10,31,21,0.97) 0%,rgba(10,31,21,0.3) 60%,transparent 100%)" }}/>
-
-              {/* Top gold line when active */}
-              {active===i && (
-                <div style={{ position:"absolute", top:0, left:0, right:0, height:"2px", background:"linear-gradient(90deg,transparent,#a34d26,transparent)" }}/>
-              )}
-
-              {/* Collapsed: vertical label */}
               {active!==i && (
-                <div style={{
-                  position:"absolute", top:"50%", left:"50%",
-                  transform:"translate(-50%,-50%) rotate(90deg)",
-                  whiteSpace:"nowrap",
-                  fontFamily:"Cormorant Garamond,Georgia,serif",
-                  fontStyle:"italic",
-                  fontSize:"15px",
-                  color:"rgba(232,224,204,0.5)",
-                  letterSpacing:"0.05em",
-                }}>
-                  {ev.title}
+                <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%) rotate(90deg)", whiteSpace:"nowrap",
+                  fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"15px", color:"rgba(232,224,204,0.45)" }}>
+                  {ev.label}
                 </div>
               )}
 
-              {/* Expanded: full content */}
               {active===i && (
-                <motion.div
-                  initial={{ opacity:0, y:16 }}
-                  animate={{ opacity:1, y:0 }}
-                  transition={{ duration:0.4, delay:0.15 }}
+                <motion.div initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.4, delay:0.15 }}
                   style={{ position:"absolute", bottom:0, left:0, right:0, padding:"36px" }}>
-                  <p style={{ fontFamily:"Jost,sans-serif", fontSize:"9px", letterSpacing:"0.5em", color:R, textTransform:"uppercase", marginBottom:"12px", opacity:0.8 }}>
-                    {ev.num}
-                  </p>
-                  <h2 style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"clamp(1.8rem,3vw,2.4rem)", color:I, marginBottom:"14px", lineHeight:1 }}>
-                    {ev.title}
-                  </h2>
-                  <div style={{ width:"36px", height:"1px", background:R, marginBottom:"16px", opacity:0.6 }}/>
-                  <p style={{ fontFamily:"Jost,sans-serif", fontSize:"13px", color:"rgba(232,224,204,0.55)", lineHeight:1.85, marginBottom:"24px", maxWidth:"360px" }}>
-                    {ev.desc}
-                  </p>
-                  <a href={ev.link}
-                    style={{
-                      display:"inline-block",
-                      border:"1px solid rgba(163,77,38,0.7)",
-                      color:R,
-                      padding:"0.65rem 1.6rem",
-                      fontFamily:"Jost,sans-serif",
-                      fontSize:"10px",
-                      letterSpacing:"0.28em",
-                      textTransform:"uppercase",
-                      textDecoration:"none",
-                      transition:"all 0.3s",
-                    }}
-                    onMouseEnter={e => { const el=e.currentTarget as HTMLElement; el.style.background=R; el.style.color=I; }}
-                    onMouseLeave={e => { const el=e.currentTarget as HTMLElement; el.style.background="transparent"; el.style.color=R; }}>
-                    {ev.cta} →
-                  </a>
+                  <p style={{ fontFamily:"Jost,sans-serif", fontSize:"9px", letterSpacing:"0.5em", color:G, textTransform:"uppercase", marginBottom:"12px", opacity:0.8 }}>{ev.num}</p>
+                  <h2 style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"clamp(1.8rem,3vw,2.4rem)", color:I, marginBottom:"14px" }}>{ev.label}</h2>
+                  <div style={{ width:"36px", height:"1px", background:G, marginBottom:"16px", opacity:0.5 }}/>
+                  <p style={{ fontFamily:"Jost,sans-serif", fontSize:"13px", color:"rgba(232,224,204,0.52)", lineHeight:1.85, marginBottom:"24px", maxWidth:"360px" }}>{ev.desc}</p>
+                  <button
+                    onClick={() => setModal(ev.id)}
+                    style={{ border:`1px solid ${G}`, color:G, padding:"0.7rem 1.8rem", fontFamily:"Jost,sans-serif", fontSize:"10px", letterSpacing:"0.28em", textTransform:"uppercase", background:"transparent", cursor:"pointer", transition:"all 0.3s" }}
+                    onMouseEnter={e=>{ const el=e.currentTarget as HTMLElement; el.style.background=G; el.style.color=T; }}
+                    onMouseLeave={e=>{ const el=e.currentTarget as HTMLElement; el.style.background="transparent"; el.style.color=G; }}>
+                    {ev.price ? "Book Tickets →" : "Enquire Now →"}
+                  </button>
                 </motion.div>
               )}
             </div>
           ))}
         </div>
-
-        {/* Bottom CTA */}
-        <div style={{ marginTop:"64px", padding:"48px", background:"rgba(17,49,34,0.6)", border:"1px solid rgba(163,77,38,0.2)", textAlign:"center" }}>
-          <p style={{ fontFamily:"Jost,sans-serif", fontSize:"10px", letterSpacing:"0.45em", color:R, textTransform:"uppercase", marginBottom:"1rem" }}>Get in Touch</p>
-          <h2 style={{ fontFamily:"Cormorant Garamond,Georgia,serif", fontStyle:"italic", fontSize:"clamp(1.8rem,3.5vw,2.8rem)", color:I, marginBottom:"1rem" }}>
-            Let us take care of your next event.
-          </h2>
-          <p style={{ fontFamily:"Jost,sans-serif", fontSize:"14px", color:"rgba(232,224,204,0.42)", marginBottom:"2rem", maxWidth:"440px", margin:"0 auto 2rem", lineHeight:1.85 }}>
-            Call us or send an email and we will work with you on a menu, timing and arrangements that fit your occasion.
-          </p>
-          <div style={{ display:"flex", gap:"16px", justifyContent:"center", flexWrap:"wrap" }}>
-            <a href="tel:+13467680068" className="btn-primary-outline">{PHONE_NUMBER}</a>
-            <a href={"mailto:"+EMAIL} className="btn-dark-filled">Email Us</a>
-          </div>
-        </div>
       </div>
+
+      <AnimatePresence>
+        {(modal==="catering"||modal==="birthday"||modal==="corporate") && <CateringForm onClose={()=>setModal(null)}/>}
+        {modal==="custom" && <CustomEventForm onClose={()=>setModal(null)}/>}
+      </AnimatePresence>
     </div>
   );
 }

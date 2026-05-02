@@ -127,12 +127,7 @@ function Hero() {
           <div style={{position:"absolute",bottom:"10px",right:"10px",width:"18px",height:"1px",background:G,zIndex:10,opacity:0.7}}/>
           <div style={{position:"absolute",bottom:"10px",right:"10px",width:"1px",height:"18px",background:G,zIndex:10,opacity:0.7}}/>
           {/* Indian restaurant video */}
-          <video autoPlay muted loop playsInline
-            style={{width:"100%",height:"100%",objectFit:"cover",filter:"brightness(0.9) saturate(0.95)"}}>
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-indian-restaurant-food-being-cooked-43220-large.mp4" type="video/mp4"/>
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-chef-cooking-in-a-restaurant-kitchen-43052-large.mp4" type="video/mp4"/>
-            <img src="/raahi/11.03.25RaahiIndianKitchen_0038.jpg" className="w-full h-full object-cover"/>
-          </video>
+          <img src="/raahi/11.03.25RaahiIndianKitchen_0038.jpg" style={{width:"100%",height:"100%",objectFit:"cover"}}/>
         </motion.div>
       </motion.div>
 

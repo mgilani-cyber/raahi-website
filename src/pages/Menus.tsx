@@ -7,17 +7,17 @@ import { RESERVATION_URL } from "@/constants";
 const G="#d4af58",I="#e8e0cc",T="#081910",D="#0c1e14";
 
 const CAT_IMAGES: Record<string,string> = {
-  "starters":     "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=1920&q=80",
-  "street-eats":  "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=1920&q=80",
-  "tandoor":      "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=1920&q=80",
-  "dosa":         "https://images.unsplash.com/photo-1630383249896-483b8f926946?w=1920&q=80",
-  "indo-chinese": "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=1920&q=80",
-  "mains-veg":    "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1920&q=80",
-  "mains-nonveg": "https://images.unsplash.com/photo-1574653853027-5382a3d23a15?w=1920&q=80",
-  "biryani":      "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=1920&q=80",
-  "breads":       "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=1920&q=80",
-  "desserts":     "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1920&q=80",
-  "drinks":       "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1920&q=80",
+  "starters":     "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=1200&q=80",
+  "street-eats":  "https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=1200&q=80",
+  "tandoor":      "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=1200&q=80",
+  "dosa":         "https://images.unsplash.com/photo-1567188040759-fb8a883dc6d6?w=1200&q=80",
+  "indo-chinese": "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=1200&q=80",
+  "mains-veg":    "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=1200&q=80",
+  "mains-nonveg": "https://images.unsplash.com/photo-1574653853027-5382a3d23a15?w=1200&q=80",
+  "biryani":      "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=1200&q=80",
+  "breads":       "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1200&q=80",
+  "desserts":     "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=1200&q=80",
+  "drinks":       "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1200&q=80",
 };
 
 function ItemRow({ item }: { item: any }) {
