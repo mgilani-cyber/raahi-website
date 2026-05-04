@@ -197,6 +197,7 @@ export default function BookEvent() {
                 backgroundImage:`url(${ev.img})`,
             backgroundSize:"cover",
             backgroundPosition:"center",
+            backgroundBlendMode:"multiply",
             flex: active===i ? "4 1 0%" : "1 1 0%",
                 borderRadius:"4px",
                 transition:"flex 0.6s cubic-bezier(0.25,0.46,0.45,0.94)",
@@ -206,7 +207,9 @@ export default function BookEvent() {
               }}
               onMouseEnter={() => setActive(i)}>
 
-              {active===i && <div style={{ position:"absolute", top:0, left:0, right:0, height:"2px", background:`linear-gradient(90deg,transparent,${G},transparent)` }}/>}
+              {/* Dark overlay for text readability */}
+              <div style={{ position:"absolute", inset:0, background:"rgba(8,20,14,0.72)", zIndex:0 }}/>
+              {active===i && <div style={{ position:"absolute", top:0, left:0, right:0, height:"2px", background:`linear-gradient(90deg,transparent,${G},transparent)`, zIndex:1 }}/>}
 
               {active!==i && (
                 <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%) rotate(90deg)", whiteSpace:"nowrap",
