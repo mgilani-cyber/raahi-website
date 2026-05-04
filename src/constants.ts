@@ -6,3 +6,5 @@ export const PHONE_SECONDARY  = "+1 (713) 277-5082";
 export const EMAIL            = "Info@raahiindiankitchen.com";
 export const ADDRESS          = "17695 Tomball Pkwy, Houston, TX 77064";
 export const GOOGLE_MAPS_URL  = "https://maps.app.goo.gl/5Shp9o5168SPjViY7";
+
+export const ONLINE_ORDER_URL = "https://online.skytab.com/s/raahiindiankitchen";

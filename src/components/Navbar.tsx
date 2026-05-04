@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 
 const G="#d4af58",I="#e8e0cc",T="#0b1e14";
 const SHIFT4 = "https://reservations.shift4payments.com/#/28a60320-b36c-4294-9eb4-0bc1b1d8e019";
+const ORDER_URL = "https://online.skytab.com/s/raahiindiankitchen";
 
 const NAV = [
   { label:"Menu",         path:"/menus" },
@@ -75,6 +76,16 @@ export const Navbar = () => {
 
           {/* Reserve button */}
           <div className="flex items-center gap-3">
+            <a href={ORDER_URL} target="_blank" rel="noopener noreferrer"
+              className="hidden md:inline-flex"
+              style={{ fontSize:"10px", padding:"0.55rem 1.5rem", fontFamily:"Jost,sans-serif",
+                letterSpacing:"0.22em", textTransform:"uppercase", textDecoration:"none",
+                color:"rgba(212,175,88,0.7)", border:"1px solid rgba(212,175,88,0.2)",
+                transition:"all 0.3s" }}
+              onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.color="#d4af58";(e.currentTarget as HTMLElement).style.borderColor="rgba(212,175,88,0.5)"}}
+              onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.color="rgba(212,175,88,0.7)";(e.currentTarget as HTMLElement).style.borderColor="rgba(212,175,88,0.2)"}}>
+              Order Online
+            </a>
             <a href={SHIFT4} target="_blank" rel="noopener noreferrer"
               className="hidden md:inline-flex btn-primary-outline"
               style={{ fontSize:"10px", padding:"0.55rem 1.5rem" }}>
